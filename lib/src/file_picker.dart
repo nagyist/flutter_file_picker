@@ -56,6 +56,8 @@ abstract final class FilePicker {
   /// Note: This requires the User Selected File Read entitlement on macOS.
   ///
   /// Returns `null` if aborted.
+  /// NOTE: `allowMultiple` is deprecated. Use `pickFile` for single-file
+  /// selection; `pickFiles` now implies multiple selection by default.
   static Future<FilePickerResult?> pickFiles({
     String? dialogTitle,
     String? initialDirectory,
@@ -63,7 +65,10 @@ abstract final class FilePicker {
     List<String>? allowedExtensions,
     Function(FilePickerStatus)? onFileLoading,
     int compressionQuality = 0,
-    bool allowMultiple = false,
+    @Deprecated(
+      'use pickFile for single-file selection; this parameter will be removed in a future release',
+    )
+    bool allowMultiple = true,
     bool withData = kIsWeb,
     bool withReadStream = false,
     bool lockParentWindow = false,
