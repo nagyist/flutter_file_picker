@@ -58,6 +58,10 @@ abstract final class FilePicker {
   /// Returns `null` if aborted.
   /// NOTE: `allowMultiple` is deprecated. Use `pickFile` for single-file
   /// selection; `pickFiles` now implies multiple selection by default.
+  /// NOTE: `withData`, `withReadStream` and `readSequential` are deprecated.
+  /// Call `PlatformFile.readAsBytes()` or `PlatformFile.readAsByteStream()` on
+  /// the returned `PlatformFile` to load data on demand. These parameters
+  /// will be removed in a future release.
   static Future<FilePickerResult?> pickFiles({
     String? dialogTitle,
     String? initialDirectory,
@@ -69,9 +73,18 @@ abstract final class FilePicker {
       'use pickFile for single-file selection; this parameter will be removed in a future release',
     )
     bool allowMultiple = true,
+    @Deprecated(
+      'Use PlatformFile.readAsBytes(); this parameter will be removed in a future release',
+    )
     bool withData = kIsWeb,
+    @Deprecated(
+      'Use PlatformFile.readAsByteStream(); this parameter will be removed in a future release',
+    )
     bool withReadStream = false,
     bool lockParentWindow = false,
+    @Deprecated(
+      'Use PlatformFile.readAsByteStream(); this parameter will be removed in a future release',
+    )
     bool readSequential = false,
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
@@ -107,9 +120,18 @@ abstract final class FilePicker {
     List<String>? allowedExtensions,
     Function(FilePickerStatus)? onFileLoading,
     int compressionQuality = 0,
+    @Deprecated(
+      'Use PlatformFile.readAsBytes(); this parameter will be removed in a future release',
+    )
     bool withData = kIsWeb,
+    @Deprecated(
+      'Use PlatformFile.readAsByteStream(); this parameter will be removed in a future release',
+    )
     bool withReadStream = false,
     bool lockParentWindow = false,
+    @Deprecated(
+      'Use PlatformFile.readAsByteStream(); this parameter will be removed in a future release',
+    )
     bool readSequential = false,
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
