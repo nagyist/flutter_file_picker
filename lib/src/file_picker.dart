@@ -39,7 +39,7 @@ abstract final class FilePicker {
   /// [initialDirectory] can be optionally set to an absolute path to specify
   /// where the dialog should open. Only supported on Linux, macOS, and Windows.
   /// On macOS the home directory shortcut (~/) is not necessary and passing it will be ignored.
-  /// On macOS if the [initialDirectory] is invalid the user directory or previously valid directory
+  /// On macOS if the [initialDirectory] is invalid, the user directory or previously valid directory
   /// will be used.
   ///
   /// [readSequential] can be optionally set on web to keep the import file order during import.
@@ -216,7 +216,7 @@ abstract final class FilePicker {
   /// [initialDirectory] can be optionally set to an absolute path to specify
   /// where the dialog should open. Only supported on Linux, macOS, and Windows.
   /// On macOS the home directory shortcut (~/) is not necessary and passing it will be ignored.
-  /// On macOS if the [initialDirectory] is invalid the user directory or previously valid directory
+  /// On macOS if the [initialDirectory] is invalid, the user directory or previously valid directory
   /// will be used.
   ///
   /// Returns a [Future<String?>] which resolves to the absolute path of the selected directory,
@@ -263,7 +263,7 @@ abstract final class FilePicker {
   /// [initialDirectory] can be optionally set to an absolute path to specify
   /// where the dialog should open. Only supported on Linux, macOS, and Windows.
   /// On macOS the home directory shortcut (~/) is not necessary and passing it will be ignored.
-  /// On macOS if the [initialDirectory] is invalid the user directory or previously valid directory
+  /// On macOS if the [initialDirectory] is invalid, the user directory or previously valid directory
   /// will be used.
   ///
   /// The file type filter [type] defaults to [FileType.any]. Optionally,
