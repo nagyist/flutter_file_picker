@@ -40,6 +40,11 @@ class PlatformFile {
   /// ```
   /// final File myFile = File(platformFile.path);
   /// ```
+  ///
+  /// This property is `null` in the following cases:
+  /// - On Web, where local file paths are not available (it may point to a Blob URL instead).
+  /// - On Android, when picking a directory or using SAF without caching enabled.
+  ///
   /// On web the path points to a Blob URL, if present, which can be cleaned up using [URL.revokeObjectURL](https://pub.dev/documentation/web/latest/web/URL/revokeObjectURL.html).
   /// Read more about it [here](https://github.com/miguelpruivo/flutter_file_picker/wiki/FAQ)
   final String? path;
@@ -49,10 +54,19 @@ class PlatformFile {
 
   /// Byte data for this file. Particularly useful if you want to manipulate its data
   /// or easily upload to somewhere else.
+  ///
+  /// This property is `null` unless [FilePicker.pickFiles] (or `pickFile`) was called with
+  /// `withData: true`. Enabling this on mobile platforms for large files may lead to
+  /// Out Of Memory (OOM) issues; use [readStream] instead.
+  ///
   /// [Check here in the FAQ](https://github.com/miguelpruivo/flutter_file_picker/wiki/FAQ) an example on how to use it to upload on web.
   final Uint8List? bytes;
 
-  /// File content as stream
+  /// File content as a stream of bytes.
+  ///
+  /// This property is `null` unless [FilePicker.pickFiles] (or `pickFile`) was called with
+  /// `withReadStream: true`. This is the recommended way to handle large files on
+  /// mobile and desktop platforms.
   final Stream<List<int>>? readStream;
 
   /// The file size in bytes. Defaults to `0` if the file size could not be
@@ -62,6 +76,10 @@ class PlatformFile {
   /// The platform identifier for the original file, refers to an [Uri](https://developer.android.com/reference/android/net/Uri) on Android and
   /// to a [NSURL](https://developer.apple.com/documentation/foundation/nsurl) on iOS.
   /// Is set to `null` on all other platforms since those are all already referencing the original file content.
+  ///
+  /// This property is `null` in the following cases:
+  /// - On Web, where local file paths are not available (it may point to a Blob URL instead).
+  /// - On Android, when picking a directory or using SAF without caching enabled.
   ///
   /// Note: You can't use this to create a Dart `File` instance since this is a safe-reference for the original platform files, for
   /// that the [path] property should be used instead.

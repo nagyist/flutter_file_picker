@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:file_picker/src/platform/file_picker_platform_interface.dart';
 import 'package:file_picker/src/api/file_picker_result.dart';
+import 'package:file_picker/src/api/platform_file.dart';
 import 'package:file_picker/src/api/file_picker_types.dart';
 import 'package:file_picker/src/api/android_saf_options.dart';
 
@@ -85,6 +86,46 @@ abstract final class FilePicker {
       cancelUploadOnWindowBlur: cancelUploadOnWindowBlur,
       androidSafOptions: androidSafOptions,
     );
+  }
+
+  /// Opens a native file explorer and lets the user select a single file.
+  ///
+  /// This is a convenience wrapper around [pickFiles] for when you only need to
+  /// pick one file. It returns a [PlatformFile] directly, or `null` if the
+  /// user canceled the operation.
+  ///
+  /// For documentation on the parameters, see [pickFiles].
+  static Future<PlatformFile?> pickFile({
+    String? dialogTitle,
+    String? initialDirectory,
+    FileType type = FileType.any,
+    List<String>? allowedExtensions,
+    Function(FilePickerStatus)? onFileLoading,
+    int compressionQuality = 0,
+    bool withData = kIsWeb,
+    bool withReadStream = false,
+    bool lockParentWindow = false,
+    bool readSequential = false,
+    bool cancelUploadOnWindowBlur = true,
+    AndroidSAFOptions? androidSafOptions,
+  }) async {
+    final result = await pickFiles(
+      dialogTitle: dialogTitle,
+      initialDirectory: initialDirectory,
+      type: type,
+      allowedExtensions: allowedExtensions,
+      onFileLoading: onFileLoading,
+      compressionQuality: compressionQuality,
+      allowMultiple: false,
+      withData: withData,
+      withReadStream: withReadStream,
+      lockParentWindow: lockParentWindow,
+      readSequential: readSequential,
+      cancelUploadOnWindowBlur: cancelUploadOnWindowBlur,
+      androidSafOptions: androidSafOptions,
+    );
+
+    return result?.files.firstOrNull;
   }
 
   /// Displays a dialog that allows the user to select both files and
