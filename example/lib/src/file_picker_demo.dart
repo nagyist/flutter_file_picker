@@ -261,15 +261,17 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     String? pickedSaveFilePath;
     bool hasUserAborted = true;
 
-    final bytes = pickedFiles?.firstOrNull?.bytes;
+    final file = pickedFiles?.firstOrNull;
     final fileName = _defaultFileNameController.text;
 
-    if (bytes == null || fileName.isEmpty) {
+    if (file == null || fileName.isEmpty) {
       _logException(
-        'Please pick a file with data enabled first and provide a default file name.',
+        'Please pick a file first and provide a default file name.',
       );
       return;
     }
+
+    final bytes = await file.readAsBytes();
 
     _resetState();
 

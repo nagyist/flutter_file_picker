@@ -97,6 +97,12 @@ class PlatformFile {
     }
   }
 
+  /// Read the file content as bytes.
+  Future<Uint8List> readAsBytes() => xFile.readAsBytes();
+
+  /// Read the file content as a stream of bytes.
+  Stream<Uint8List> readAsByteStream() => xFile.openRead();
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
