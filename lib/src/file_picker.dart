@@ -136,7 +136,7 @@ abstract final class FilePicker {
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
   }) async {
-    final result = await pickFiles(
+    final result = await FilePickerPlatform.instance.pickFiles(
       dialogTitle: dialogTitle,
       initialDirectory: initialDirectory,
       type: type,
