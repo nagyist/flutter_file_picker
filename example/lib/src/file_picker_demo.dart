@@ -260,6 +260,17 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
   Future<void> _saveFile() async {
     String? pickedSaveFilePath;
     bool hasUserAborted = true;
+
+    final bytes = pickedFiles?.firstOrNull?.bytes;
+    final fileName = _defaultFileNameController.text;
+
+    if (bytes == null || fileName.isEmpty) {
+      _logException(
+        'Please pick a file with data enabled first and provide a default file name.',
+      );
+      return;
+    }
+
     _resetState();
 
     try {
@@ -267,10 +278,10 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
         allowedExtensions: _allowedExtensionsFromInput(),
         type: FileType.custom,
         dialogTitle: _dialogTitleController.text,
-        fileName: _defaultFileNameController.text,
+        fileName: fileName,
         initialDirectory: _initialDirectoryController.text,
         lockParentWindow: _lockParentWindow,
-        bytes: pickedFiles?.first.bytes,
+        bytes: bytes,
       );
       hasUserAborted = pickedSaveFilePath == null;
     } on PlatformException catch (e) {

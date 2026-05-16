@@ -243,25 +243,21 @@ abstract final class FilePicker {
     );
   }
 
-  /// Opens a save file dialog which lets the user select a file path and a file
-  /// name to save a file.
+  /// Opens a save file dialog to let the user select a location and a file name to
+  /// save [bytes] to.
   ///
-  /// For mobile, this function will save a file with the given [fileName] and [bytes] and return the path where the file was saved.
+  /// Returns a [Future<String?>] which resolves to the absolute path of the
+  /// saved file, or `null` if the user canceled the operation.
   ///
-  /// For desktop platforms, this function opens a dialog to let the user choose a location for the file and returns the selected path.
-  /// If the bytes are provided, then the bytes are written to a file at the chosen path.
-  ///
-  /// On the web, this function will start a download for the file with [bytes] and [fileName].
-  /// If the [bytes] or [fileName] are omitted, this will throw an [ArgumentError].
-  /// The returned path for the downloaded file will always be `null`, as the browser handles the download.
+  /// On the web, this starts a download and always returns `null`.
   ///
   /// The User Selected File Read/Write entitlement is required on macOS.
   ///
   /// [dialogTitle] can be set to display a custom title on desktop platforms.
   /// Not supported on macOS.
   ///
-  /// [fileName] can be set to a non-empty string to provide a default file
-  /// name. Throws an `IllegalCharacterInFileNameException` under Windows if the
+  /// [fileName] should be set to provide a default file name.
+  /// Throws an `IllegalCharacterInFileNameException` under Windows if the
   /// given [fileName] contains forbidden characters.
   ///
   /// [initialDirectory] can be optionally set to an absolute path to specify
@@ -279,15 +275,14 @@ abstract final class FilePicker {
   /// stay in front of the Flutter window until it is closed (like a modal
   /// window). This parameter works only on Windows desktop.
   ///
-  /// Returns `null` if aborted. Returns a [Future<String?>] which resolves to
-  /// the absolute path of the selected file, if the user selected a file.
+  /// Returns `null` if aborted.
   static Future<String?> saveFile({
     String? dialogTitle,
-    String? fileName,
+    required String fileName,
     String? initialDirectory,
     FileType type = FileType.any,
     List<String>? allowedExtensions,
-    Uint8List? bytes,
+    required Uint8List bytes,
     Function(FilePickerStatus)? onFileLoading,
     bool lockParentWindow = false,
   }) {
