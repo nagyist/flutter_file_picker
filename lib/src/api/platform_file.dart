@@ -61,7 +61,7 @@ class PlatformFile {
   ///
   /// [Check here in the FAQ](https://github.com/miguelpruivo/flutter_file_picker/wiki/FAQ) an example on how to use it to upload on web.
   @Deprecated(
-    'Use readAsBytes() instead to avoid OOM issues on mobile platforms',
+    'Use readAsBytes() instead to avoid out-of-memory issues with large files.',
   )
   final Uint8List? bytes;
 
