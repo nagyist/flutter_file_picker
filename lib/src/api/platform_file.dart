@@ -117,11 +117,6 @@ class PlatformFile {
 
   /// Returns the length of the file in bytes.
   ///
-  /// Resolution order:
-  /// 1. If `size` is > 0, it is returned immediately.
-  /// 2. Otherwise, attempts to use `xFile.length()` which works across platforms.
-  /// 3. If that fails, falls back to `bytes?.lengthInBytes` or `0`.
-  ///
   /// Note: on Web, `xFile.length()` depends on the underlying `XFile` implementation
   /// and may require `withData: true` when using `XFile.fromData` — in that case the
   /// fallback to `bytes` will be used.
