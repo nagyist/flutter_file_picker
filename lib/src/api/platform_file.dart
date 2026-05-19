@@ -41,11 +41,9 @@ class PlatformFile {
   /// final File myFile = File(platformFile.path);
   /// ```
   ///
-  /// This property is `null` in the following cases:
-  /// - On Web, where local file paths are not available (it may point to a Blob URL instead).
-  /// - On Android, when picking a directory or using SAF without caching enabled.
-  ///
-  /// On web the path points to a Blob URL, if present, which can be cleaned up using [URL.revokeObjectURL](https://pub.dev/documentation/web/latest/web/URL/revokeObjectURL.html).
+  /// This property is `null` on Android, when using SAF without caching enabled.
+  /// 
+  /// On the web this may or may not point to a Blob URL, which can be cleaned up using [URL.revokeObjectURL](https://pub.dev/documentation/web/latest/web/URL/revokeObjectURL.html).
   /// Read more about it [here](https://github.com/miguelpruivo/flutter_file_picker/wiki/FAQ)
   final String? path;
 
