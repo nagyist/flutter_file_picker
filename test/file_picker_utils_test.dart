@@ -43,8 +43,10 @@ void main() {
         readStream,
       );
 
+      // ignore: deprecated_member_use_from_same_package
       expect(platformFile.bytes, equals(bytes));
       expect(platformFile.name, equals('test_utils.jpg'));
+      // ignore: deprecated_member_use_from_same_package
       expect(platformFile.readStream, equals(readStream));
       expect(platformFile.size, equals(bytes.length));
     });
@@ -62,6 +64,7 @@ void main() {
 
         expect(platformFile.bytes, equals(null));
         expect(platformFile.name, equals('test_utils.app'));
+        // ignore: deprecated_member_use_from_same_package
         expect(platformFile.readStream, equals(null));
         expect(
           platformFile.size,
