@@ -56,7 +56,6 @@ abstract final class FilePicker {
   /// Note: This requires the User Selected File Read entitlement on macOS.
   ///
   /// Returns `null` if aborted.
-  /// NOTE: `allowMultiple` is deprecated. Use `pickFile` for single-file
   /// selection; `pickFiles` now implies multiple selection by default.
   /// NOTE: `withData`, `withReadStream` and `readSequential` are deprecated.
   /// Call `PlatformFile.readAsBytes()` or `PlatformFile.readAsByteStream()` on
