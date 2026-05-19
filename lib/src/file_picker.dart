@@ -119,19 +119,7 @@ abstract final class FilePicker {
     List<String>? allowedExtensions,
     Function(FilePickerStatus)? onFileLoading,
     int compressionQuality = 0,
-    @Deprecated(
-      'Use PlatformFile.readAsBytes(); this parameter will be removed in a future release',
-    )
-    bool withData = kIsWeb,
-    @Deprecated(
-      'Use PlatformFile.readAsByteStream(); this parameter will be removed in a future release',
-    )
-    bool withReadStream = false,
     bool lockParentWindow = false,
-    @Deprecated(
-      'Use PlatformFile.readAsByteStream(); this parameter will be removed in a future release',
-    )
-    bool readSequential = false,
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
   }) async {
@@ -143,10 +131,10 @@ abstract final class FilePicker {
       onFileLoading: onFileLoading,
       compressionQuality: compressionQuality,
       allowMultiple: false,
-      withData: withData,
-      withReadStream: withReadStream,
+      withData: false,
+      withReadStream: false,
       lockParentWindow: lockParentWindow,
-      readSequential: readSequential,
+      readSequential: false,
       cancelUploadOnWindowBlur: cancelUploadOnWindowBlur,
       androidSafOptions: androidSafOptions,
     );
