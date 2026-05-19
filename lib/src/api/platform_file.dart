@@ -93,10 +93,8 @@ class PlatformFile {
   /// Retrieves this as a XFile
   XFile get xFile {
     if (kIsWeb) {
-      // ignore: deprecated_member_use_from_same_package
       return XFile.fromData(bytes!, name: name, length: size);
     } else {
-      // ignore: deprecated_member_use_from_same_package
       return XFile(path!, name: name, bytes: bytes, length: size);
     }
   }
@@ -142,12 +140,10 @@ class PlatformFile {
       return true;
     }
 
-    // ignore: deprecated_member_use_from_same_package
     return other is PlatformFile &&
         other.path == path &&
         other.name == name &&
         other.bytes == bytes &&
-        // ignore: deprecated_member_use_from_same_package
         other.readStream == readStream &&
         other.identifier == identifier &&
         other.size == size;
@@ -157,13 +153,11 @@ class PlatformFile {
   int get hashCode {
     return kIsWeb
         ? 0
-        // ignore: deprecated_member_use_from_same_package
         : Object.hash(path, name, bytes, readStream, identifier, size);
   }
 
   @override
   String toString() {
-    // ignore: deprecated_member_use_from_same_package
     return 'PlatformFile(${kIsWeb ? '' : 'path $path'}, name: $name, bytes: $bytes, readStream: $readStream, size: $size)';
   }
 }
@@ -175,9 +169,7 @@ class AndroidPlatformFile extends PlatformFile {
         path: file.path,
         name: file.name,
         size: file.size,
-        // ignore: deprecated_member_use_from_same_package
         bytes: file.bytes,
-        // ignore: deprecated_member_use_from_same_package
         readStream: file.readStream,
         identifier: file.identifier,
       );
@@ -197,7 +189,6 @@ class AndroidPlatformFile extends PlatformFile {
 
   @override
   String toString() {
-    // ignore: deprecated_member_use_from_same_package
     return 'AndroidPlatformFile(${kIsWeb ? '' : 'path $path'}, name: $name, bytes: $bytes, readStream: $readStream, size: $size, safHandle: $safHandle)';
   }
 }
