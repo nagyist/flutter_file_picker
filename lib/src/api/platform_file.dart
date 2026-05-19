@@ -60,6 +60,9 @@ class PlatformFile {
   /// Out Of Memory (OOM) issues; use [readStream] instead.
   ///
   /// [Check here in the FAQ](https://github.com/miguelpruivo/flutter_file_picker/wiki/FAQ) an example on how to use it to upload on web.
+  @Deprecated(
+    'Use readAsBytes() instead to avoid OOM issues on mobile platforms',
+  )
   final Uint8List? bytes;
 
   /// File content as a stream of bytes.
@@ -67,6 +70,7 @@ class PlatformFile {
   /// This property is `null` unless [FilePicker.pickFiles] (or `pickFile`) was called with
   /// `withReadStream: true`. This is the recommended way to handle large files on
   /// mobile and desktop platforms.
+  @Deprecated('Use readAsByteStream() instead')
   final Stream<List<int>>? readStream;
 
   /// The file size in bytes. Defaults to `0` if the file size could not be
