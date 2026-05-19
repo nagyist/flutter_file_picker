@@ -42,7 +42,7 @@ class PlatformFile {
   /// ```
   ///
   /// This property is `null` on Android, when using SAF without caching enabled.
-  /// 
+  ///
   /// On the web this may or may not point to a Blob URL, which can be cleaned up using [URL.revokeObjectURL](https://pub.dev/documentation/web/latest/web/URL/revokeObjectURL.html).
   /// Read more about it [here](https://github.com/miguelpruivo/flutter_file_picker/wiki/FAQ)
   final String? path;
@@ -114,6 +114,25 @@ class PlatformFile {
   /// to create the stream. This is a limitation that should be addressed in a future version to
   /// support proper streaming on web without requiring `withData`.
   Stream<Uint8List> readAsByteStream() => xFile.openRead();
+
+  /// Returns the length of the file in bytes.
+  ///
+  /// Resolution order:
+  /// 1. If `size` is > 0, it is returned immediately.
+  /// 2. Otherwise, attempts to use `xFile.length()` which works across platforms.
+  /// 3. If that fails, falls back to `bytes?.lengthInBytes` or `0`.
+  ///
+  /// Note: on Web, `xFile.length()` depends on the underlying `XFile` implementation
+  /// and may require `withData: true` when using `XFile.fromData` — in that case the
+  /// fallback to `bytes` will be used.
+  Future<int> length() async {
+    if (size > 0) return size;
+    try {
+      return await xFile.length();
+    } catch (_) {
+      return bytes?.lengthInBytes ?? 0;
+    }
+  }
 
   @override
   bool operator ==(Object other) {
