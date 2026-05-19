@@ -102,9 +102,19 @@ class PlatformFile {
   }
 
   /// Read the file content as bytes.
+  ///
+  /// For large files on mobile and desktop platforms, prefer [readAsByteStream]
+  /// to avoid Out Of Memory (OOM) issues.
   Future<Uint8List> readAsBytes() => xFile.readAsBytes();
 
   /// Read the file content as a stream of bytes.
+  ///
+  /// This is the recommended way to handle large files on mobile and desktop platforms.
+  ///
+  /// **Note on Web:** This method currently requires [FilePicker.pickFiles] or [FilePicker.pickFile]
+  /// to have been called with `withData: true`, otherwise this will fail since `bytes` is required
+  /// to create the stream. This is a limitation that should be addressed in a future version to
+  /// support proper streaming on web without requiring `withData`.
   Stream<Uint8List> readAsByteStream() => xFile.openRead();
 
   @override
