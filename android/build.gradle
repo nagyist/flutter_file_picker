@@ -2,9 +2,6 @@ group 'com.mr.flutter.plugin.filepicker'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext {
-        kotlin_version = '1.8.22'
-    }
     repositories {
         google()
         mavenCentral()
@@ -12,7 +9,6 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:8.5.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -23,15 +19,7 @@ rootProject.allprojects {
     }
 }
 
-def isAgp9OrAbove = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger() >= 9
-def builtInKotlinProperty = providers.gradleProperty('android.builtInKotlin').orNull
-def isBuiltInKotlinEnabled = isAgp9OrAbove && (builtInKotlinProperty == null || builtInKotlinProperty.toBoolean())
-def shouldApplyKotlinAndroidPlugin = !isAgp9OrAbove || !isBuiltInKotlinEnabled
-
 apply plugin: 'com.android.library'
-if (shouldApplyKotlinAndroidPlugin) {
-    apply plugin: 'org.jetbrains.kotlin.android'
-}
 
 android {
     compileSdk flutter.compileSdkVersion
@@ -50,11 +38,15 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    if (shouldApplyKotlinAndroidPlugin) {
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_17.toString()
+    tasks.configureEach { task ->
+        if (task.class.name.contains("KotlinCompile")) {
+            task.kotlinOptions {
+                jvmTarget = "17"
+            }
         }
     }
+
+
     
     dependencies {
         implementation 'androidx.core:core:1.15.0'
