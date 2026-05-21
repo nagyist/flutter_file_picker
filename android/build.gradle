@@ -41,18 +41,16 @@ android {
     tasks.configureEach { task ->
         if (task.class.name.contains("KotlinCompile")) {
             task.kotlinOptions {
-                jvmTarget = "17"
+                jvmTarget = JavaVersion.VERSION_17.toString()
             }
         }
     }
 
-
-    
     dependencies {
-        implementation 'androidx.core:core:1.15.0'
-        implementation 'androidx.annotation:annotation:1.9.1'
-        implementation "androidx.lifecycle:lifecycle-runtime:2.8.7"
-        implementation "org.apache.tika:tika-core:3.2.3"
+        implementation 'androidx.core:core:1.18.0'
+        implementation 'androidx.annotation:annotation:1.10.0'
+        implementation "androidx.lifecycle:lifecycle-runtime:2.10.0"
+        implementation "org.apache.tika:tika-core:3.3.0"
     }
 
     if (project.android.hasProperty("namespace")) {
@@ -60,5 +58,5 @@ android {
     }
 }
 dependencies {
-    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'androidx.core:core-ktx:1.18.0'
 }
