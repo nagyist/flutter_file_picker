@@ -13,13 +13,13 @@ let package = Package(
         .library(name: "file-picker", targets: ["file_picker"])
     ],
     dependencies: [
-        .package(name: "FlutterFramework", path: "../FlutterFramework"),
+        .package(name: "FlutterFramework", path: "../FlutterFramework")
     ],
     targets: [
         .target(
             name: "file_picker",
             dependencies: [
-                .product(name: "FlutterFramework", package: "FlutterFramework"),
+                .product(name: "FlutterFramework", package: "FlutterFramework")
             ],
             resources: [
                 .process("PrivacyInfo.xcprivacy")
