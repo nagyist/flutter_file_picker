@@ -2,17 +2,13 @@ group 'com.mr.flutter.plugin.filepicker'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext {
-        kotlin_version = '1.8.22'
-    }
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.5.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:8.5.2'
     }
 }
 
@@ -23,15 +19,7 @@ rootProject.allprojects {
     }
 }
 
-def isAgp9OrAbove = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION.tokenize('.')[0].toInteger() >= 9
-def builtInKotlinProperty = providers.gradleProperty('android.builtInKotlin').orNull
-def isBuiltInKotlinEnabled = isAgp9OrAbove && (builtInKotlinProperty == null || builtInKotlinProperty.toBoolean())
-def shouldApplyKotlinAndroidPlugin = !isAgp9OrAbove || !isBuiltInKotlinEnabled
-
 apply plugin: 'com.android.library'
-if (shouldApplyKotlinAndroidPlugin) {
-    apply plugin: 'org.jetbrains.kotlin.android'
-}
 
 android {
     compileSdk flutter.compileSdkVersion
@@ -50,17 +38,19 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    if (shouldApplyKotlinAndroidPlugin) {
-        kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_17.toString()
+    tasks.configureEach { task ->
+        if (task.class.name.contains("KotlinCompile")) {
+            task.kotlinOptions {
+                jvmTarget = JavaVersion.VERSION_17.toString()
+            }
         }
     }
-    
+
     dependencies {
-        implementation 'androidx.core:core:1.15.0'
-        implementation 'androidx.annotation:annotation:1.9.1'
-        implementation "androidx.lifecycle:lifecycle-runtime:2.8.7"
-        implementation "org.apache.tika:tika-core:3.2.3"
+        implementation 'androidx.core:core:1.18.0'
+        implementation 'androidx.annotation:annotation:1.10.0'
+        implementation "androidx.lifecycle:lifecycle-runtime:2.10.0"
+        implementation "org.apache.tika:tika-core:3.3.0"
     }
 
     if (project.android.hasProperty("namespace")) {
@@ -68,5 +58,5 @@ android {
     }
 }
 dependencies {
-    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'androidx.core:core-ktx:1.18.0'
 }
