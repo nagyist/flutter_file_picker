@@ -10,6 +10,8 @@
 - Fixed an issue where `FileType.any` would prevent subdirectories from being listed in the system file explorer by ensuring `EXTRA_MIME_TYPES` is correctly passed as an array. [#2013](https://github.com/miguelpruivo/flutter_file_picker/issues/2013)
 - Removed explicit Kotlin Gradle Plugin (KGP) application and dependencies from build files to resolve warnings under AGP 9.0+.
 - Updated Android build tooling and dependencies: Android Gradle Plugin bumped to `8.5.2`, `androidx.core:core` and `androidx.core:core-ktx` updated to `1.18.0`, `androidx.lifecycle:lifecycle-runtime` updated to `2.10.0`, and `org.apache.tika:tika-core` updated to `3.3.0`.
+- Migrated Android build files from Groovy to Kotlin DSL (`build.gradle.kts`, `settings.gradle.kts`).
+- Added Android AGP compatibility CI workflow.
 
 ### Darwin
 - Added missing `FlutterFramework` dependency to `Package.swift` for Swift Package Manager (SPM) compatibility.
