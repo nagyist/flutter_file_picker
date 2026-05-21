@@ -15,9 +15,6 @@ dependencies:
     path: ../
   file: ^7.0.1
 
-dependency_overrides:
-  flutter_plugin_android_lifecycle:
-    path: /Users/danieljimene/developer/flutter/flutter_packages/packages/packages/flutter_plugin_android_lifecycle
 
 dev_dependencies:
   flutter_test:
