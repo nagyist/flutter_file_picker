@@ -4,7 +4,9 @@ import 'package:cross_file/cross_file.dart';
 import 'package:flutter/foundation.dart';
 
 import 'android_saf_handle.dart';
+import '../platform/web/platform_file_web_fetch.dart';
 
+/// Represents a file returned by the file picker across all supported platforms.
 class PlatformFile {
   PlatformFile({
     this.path,
@@ -103,7 +105,20 @@ class PlatformFile {
   ///
   /// For large files on mobile and desktop platforms, prefer [readAsByteStream]
   /// to avoid Out Of Memory (OOM) issues.
-  Future<Uint8List> readAsBytes() => xFile.readAsBytes();
+  Future<Uint8List> readAsBytes() async {
+    if (bytes != null) return bytes!;
+
+    if (kIsWeb) {
+      final fetchedBytes = await fetchBytesFromWebPath(path);
+      if (fetchedBytes != null) return fetchedBytes;
+    }
+
+    throw StateError(
+      'PlatformFile.readAsBytes(): file data is not available on Web. '
+      'Call FilePicker.pickFiles(withData: true) or ensure the file path is a '
+      'fetchable blob/data URL.',
+    );
+  }
 
   /// Read the file content as a stream of bytes.
   ///

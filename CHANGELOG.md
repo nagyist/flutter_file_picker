@@ -2,6 +2,9 @@
 ### Android / Darwin
 - Fixed `saveFile(bytes: ...)` so native byte handling is preserved on Android and iOS, avoiding the duplicate Dart-side write that could break SAF/content URI saves.
 
+### Web
+- Fixed `PlatformFile.readAsBytes()` so files picked on Web can recover data from `blob:` and `data:` URLs when `withData` was not used.
+
 ## 12.0.0-beta.4
 ### General
 - Added `pickFile()` static method as a convenience wrapper for single file selection, returning `PlatformFile?` directly. [#1469](https://github.com/miguelpruivo/flutter_file_picker/issues/1469)
