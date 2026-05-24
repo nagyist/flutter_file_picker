@@ -26,6 +26,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
   final _fileExtensionController = TextEditingController();
   String? _extension;
   bool _isLoading = false;
+  bool _isStreaming = false;
   bool _lockParentWindow = false;
   bool _userAborted = false;
   bool _multiPick = false;
@@ -33,6 +34,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
   bool _safPersist = false;
   bool _safReadWrite = false;
   bool _supportsSafOptions = false;
+  String? _streamingProgressText;
   FileType _pickingType = FileType.any;
   List<PlatformFile>? pickedFiles;
   Widget _resultsWidget = const Row(
@@ -307,6 +309,59 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     });
   }
 
+  Future<void> _streamPickedFile() async {
+    final file = pickedFiles?.isNotEmpty == true ? pickedFiles!.first : null;
+    if (file == null) {
+      _logException('No file picked. Pick a file first to stream it.');
+      return;
+    }
+
+    _resetState();
+    if (!mounted) return;
+    setState(() {
+      _userAborted = false;
+      _isStreaming = true;
+      _resultsWidget = const Center(child: Text('Starting stream...'));
+    });
+
+    int total = 0;
+    int chunks = 0;
+
+    try {
+      await for (final chunk in file.readAsByteStream()) {
+        total += chunk.length;
+        chunks++;
+        if (!mounted) break;
+        setState(() {
+          _streamingProgressText =
+              'Streaming... chunks: $chunks, bytes: $total';
+          _resultsWidget = Center(child: Text(_streamingProgressText!));
+        });
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _isStreaming = false;
+        _streamingProgressText = null;
+        _userAborted = false;
+        _resultsWidget = Center(
+          child: Text('Stream completed: $chunks chunks, $total bytes'),
+        );
+      });
+    } catch (e) {
+      _logException(e.toString());
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _isStreaming = false;
+          _streamingProgressText = null;
+          _userAborted = false;
+        });
+      }
+    }
+  }
+
   void _logException(String message) {
     printInDebug(message);
     _scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
@@ -322,6 +377,8 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
 
     setState(() {
       _isLoading = true;
+      _isStreaming = false;
+      _streamingProgressText = null;
       _userAborted = true;
     });
   }
@@ -538,6 +595,14 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
           icon: const Icon(Icons.delete_forever),
         ),
       ),
+      SizedBox(
+        width: 200,
+        child: FloatingActionButton.extended(
+          onPressed: _streamPickedFile,
+          label: const Text('Stream picked file'),
+          icon: const Icon(Icons.stream),
+        ),
+      ),
     ];
 
     final loadingIndicator = Row(
@@ -550,6 +615,19 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
             ),
           ),
         ),
+      ],
+    );
+
+    final streamingIndicator = Column(
+      children: [
+        loadingIndicator,
+        if (_streamingProgressText != null)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 24.0),
+            child: Center(
+              child: Text(_streamingProgressText!, textAlign: TextAlign.center),
+            ),
+          ),
       ],
     );
 
@@ -571,7 +649,9 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     );
 
     late final Widget resultsContent;
-    if (_isLoading) {
+    if (_isLoading && _isStreaming) {
+      resultsContent = streamingIndicator;
+    } else if (_isLoading) {
       resultsContent = loadingIndicator;
     } else if (_userAborted) {
       resultsContent = userAbortedContent;
