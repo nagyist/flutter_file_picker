@@ -30,7 +30,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
   bool _lockParentWindow = false;
   bool _userAborted = false;
   bool _multiPick = false;
-  bool _withData = true;
+  bool _withData = false;
   bool _safPersist = false;
   bool _safReadWrite = false;
   bool _supportsSafOptions = false;
