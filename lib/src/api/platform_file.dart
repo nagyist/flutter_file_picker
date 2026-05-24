@@ -104,8 +104,8 @@ class PlatformFile {
 
   /// Read the file content as bytes.
   ///
-  /// For large files on mobile and desktop platforms, prefer [readAsByteStream]
-  /// to avoid Out Of Memory (OOM) issues.
+  /// For large files, prefer [readAsByteStream] to avoid Out Of Memory (OOM)
+  /// issues.
   Future<Uint8List> readAsBytes() async {
     if (bytes != null) return bytes!;
 
@@ -115,15 +115,15 @@ class PlatformFile {
     }
 
     throw StateError(
-      'PlatformFile.readAsBytes(): file data is not available on Web. '
-      'Call FilePicker.pickFiles(withData: true) or ensure the file path is a '
-      'fetchable blob/data URL.',
+      'PlatformFile.readAsBytes(): file data is not available. '
+      'Consume the file via PlatformFile.readAsByteStream(), or on Web ensure '
+      'the file path is a fetchable blob/data URL that can be retrieved.',
     );
   }
 
   /// Read the file content as a stream of bytes.
   ///
-  /// Preferred for large files on platforms that support streaming.
+  /// Preferred for large files or incremental processing.
   ///
   /// Web behavior:
   /// - When the browser/WebView exposes Fetch `ReadableStream` (`Response.body`)
