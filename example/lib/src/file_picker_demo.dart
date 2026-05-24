@@ -263,16 +263,26 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
     bool hasUserAborted = true;
 
     final file = pickedFiles?.firstOrNull;
-    final fileName = _defaultFileNameController.text;
-
-    if (file == null || fileName.isEmpty) {
-      _logException(
-        'Please pick a file first and provide a default file name.',
-      );
+    if (file == null) {
+      _logException('Please pick a file first before saving.');
       return;
     }
 
-    final bytes = await file.readAsBytes();
+    final fileName = _defaultFileNameController.text.trim();
+    final targetFileName = fileName.isNotEmpty ? fileName : file.name;
+
+    if (targetFileName.isEmpty) {
+      _logException('Unable to determine a file name to save.');
+      return;
+    }
+
+    Uint8List bytes;
+    try {
+      bytes = await file.readAsBytes();
+    } catch (e) {
+      _logException('Could not read picked file bytes: $e');
+      return;
+    }
 
     _resetState();
 
@@ -281,7 +291,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
         allowedExtensions: _allowedExtensionsFromInput(),
         type: FileType.custom,
         dialogTitle: _dialogTitleController.text,
-        fileName: fileName,
+        fileName: targetFileName,
         initialDirectory: _initialDirectoryController.text,
         lockParentWindow: _lockParentWindow,
         bytes: bytes,
@@ -347,6 +357,40 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
         _userAborted = false;
         _resultsWidget = Center(
           child: Text('Stream completed: $chunks chunks, $total bytes'),
+        );
+      });
+    } catch (e) {
+      _logException(e.toString());
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+          _isStreaming = false;
+          _streamingProgressText = null;
+          _userAborted = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _readPickedFileAsBytes() async {
+    final file = pickedFiles?.isNotEmpty == true ? pickedFiles!.first : null;
+    if (file == null) {
+      _logException('No file picked. Pick a file first to read its bytes.');
+      return;
+    }
+
+    _resetState();
+
+    try {
+      final bytes = await file.readAsBytes();
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _isStreaming = false;
+        _streamingProgressText = null;
+        _userAborted = false;
+        _resultsWidget = Center(
+          child: Text('readAsBytes completed: ${bytes.lengthInBytes} bytes'),
         );
       });
     } catch (e) {
@@ -601,6 +645,14 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
           onPressed: _streamPickedFile,
           label: const Text('Stream picked file'),
           icon: const Icon(Icons.stream),
+        ),
+      ),
+      SizedBox(
+        width: 240,
+        child: FloatingActionButton.extended(
+          onPressed: _readPickedFileAsBytes,
+          label: const Text('Read picked file as bytes'),
+          icon: const Icon(Icons.data_array),
         ),
       ),
     ];
