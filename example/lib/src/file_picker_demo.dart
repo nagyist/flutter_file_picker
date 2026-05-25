@@ -320,7 +320,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
   }
 
   Future<void> _streamPickedFile() async {
-    final file = pickedFiles?.isNotEmpty == true ? pickedFiles!.first : null;
+    final file = pickedFiles?.firstOrNull;
     if (file == null) {
       _logException('No file picked. Pick a file first to stream it.');
       return;
