@@ -7,7 +7,7 @@ import 'android_saf_handle.dart';
 import '../platform/web/platform_file_web_fetch_stub.dart'
     if (dart.library.js_interop) '../platform/web/platform_file_web_fetch.dart';
 
-/// Represents a file returned by the file picker across all supported platforms.
+/// Represents a file returned by the file picker.
 class PlatformFile {
   PlatformFile({
     this.path,
