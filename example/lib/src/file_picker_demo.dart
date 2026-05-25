@@ -354,7 +354,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
         total += chunk.length;
         chunks++;
         bytes.add(chunk);
-        if (!mounted) break;
+        if (!mounted) return;
         setState(() {
           _streamingProgressText =
               'Streaming... chunks: $chunks, bytes: $total';
