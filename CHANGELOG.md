@@ -11,6 +11,7 @@
 ## 12.0.0-beta.4
 ### General
 - Added `pickFile()` static method as a convenience wrapper for single file selection, returning `PlatformFile?` directly. [#1469](https://github.com/miguelpruivo/flutter_file_picker/issues/1469)
+- **BREAKING CHANGE**: Refactored `saveFile()` to make `fileName` and `bytes` required parameters across all platforms for a more consistent API. Improved the method's documentation for better clarity.
 
 ### Android
 - Migrated Android build files from Groovy to Kotlin DSL (`build.gradle.kts`, `settings.gradle.kts`).
