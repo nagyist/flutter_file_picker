@@ -109,7 +109,7 @@ Stream<Uint8List> _streamFromWebPath(String path) async* {
       while (true) {
         final jsResultObj = await reader.read().toDart;
         final result = _ReadResult(jsResultObj);
-        final done = result.done;
+        if (result.done) break;
         if (done) break;
 
         final value = result.value;
