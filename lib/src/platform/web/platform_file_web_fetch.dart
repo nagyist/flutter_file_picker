@@ -19,15 +19,7 @@ extension type _Reader(JSObject _) implements JSObject {
 
 extension type _ReadResult(JSObject _) implements JSObject {
   external bool get done;
-  external JSObject? get value;
-}
-
-extension type _Uint8Array(JSObject _) implements JSObject {
-  external int get length;
-  external JSArrayBuffer get buffer;
-  external int get byteOffset;
-  external int get byteLength;
-  external int operator [](int index);
+  external JSUint8Array? get value;
 }
 
 // Web helper: recover bytes or a chunked stream from `blob:` / `data:` URLs.
@@ -80,6 +72,9 @@ Stream<Uint8List>? fetchStreamFromWebPath(String? path) {
   return _streamFromWebPath(path);
 }
 
+/// Reads a `blob:` or `data:` URL and emits its bytes as a stream when the
+/// browser exposes a streaming `Response.body`; otherwise it falls back to a
+/// single in-memory chunk or no output if the URL cannot be read.
 Stream<Uint8List> _streamFromWebPath(String path) async* {
   try {
     if (path.startsWith('data:')) {
@@ -111,11 +106,10 @@ Stream<Uint8List> _streamFromWebPath(String path) async* {
         final result = _ReadResult(jsResultObj);
         if (result.done) break;
 
-        final value = result.value;
-        if (value == null) break;
+        final arr = result.value;
+        if (arr == null) break;
 
-        final arr = _Uint8Array(value);
-        yield arr.buffer.toDart.asUint8List(arr.byteOffset, arr.byteLength);
+        yield arr.toDart;
       }
     }
   } catch (_) {

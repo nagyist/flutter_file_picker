@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:typed_data';
 
 import 'file_picker_results.dart';
 import 'picked_directory_result.dart';
@@ -35,6 +36,8 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
   bool _safReadWrite = false;
   bool _supportsSafOptions = false;
   String? _streamingProgressText;
+  Uint8List? _pickedFileBytes;
+  String? _pickedFileBytesSource;
   FileType _pickingType = FileType.any;
   List<PlatformFile>? pickedFiles;
   Widget _resultsWidget = const Row(
@@ -81,6 +84,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
   void _pickFiles() async {
     bool hasUserAborted = true;
     _resetState();
+    _clearPickedFileBytes();
 
     try {
       if (_multiPick) {
@@ -192,6 +196,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
   void _clearCachedFiles() async {
     pickedFiles = [];
     _resetState();
+    _clearPickedFileBytes();
     try {
       bool? result = await FilePicker.clearTemporaryFiles();
       _scaffoldMessengerKey.currentState?.hideCurrentSnackBar();
@@ -276,11 +281,12 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
       return;
     }
 
-    Uint8List bytes;
-    try {
-      bytes = await file.readAsBytes();
-    } catch (e) {
-      _logException('Could not read picked file bytes: $e');
+    final bytes = _pickedFileBytes;
+    if (bytes == null) {
+      _logException(
+        'No file bytes loaded yet. Press "Stream picked file" or '
+        '"Read picked file as bytes" first.',
+      );
       return;
     }
 
@@ -312,7 +318,11 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
             title: const Text('Save file path:'),
-            subtitle: Text(pickedSaveFilePath ?? ''),
+            subtitle: Text(
+              pickedSaveFilePath != null
+                  ? '$pickedSaveFilePath (bytes loaded via ${_pickedFileBytesSource ?? 'unknown'})'
+                  : '',
+            ),
           );
         },
       );
@@ -326,6 +336,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
       return;
     }
 
+    _clearPickedFileBytes();
     _resetState();
     if (!mounted) return;
     setState(() {
@@ -336,11 +347,13 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
 
     int total = 0;
     int chunks = 0;
+    final bytes = BytesBuilder(copy: false);
 
     try {
       await for (final chunk in file.readAsByteStream()) {
         total += chunk.length;
         chunks++;
+        bytes.add(chunk);
         if (!mounted) break;
         setState(() {
           _streamingProgressText =
@@ -355,6 +368,8 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
         _isStreaming = false;
         _streamingProgressText = null;
         _userAborted = false;
+        _pickedFileBytes = bytes.takeBytes();
+        _pickedFileBytesSource = 'stream';
         _resultsWidget = Center(
           child: Text('Stream completed: $chunks chunks, $total bytes'),
         );
@@ -379,6 +394,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
       return;
     }
 
+    _clearPickedFileBytes();
     _resetState();
 
     try {
@@ -389,6 +405,8 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
         _isStreaming = false;
         _streamingProgressText = null;
         _userAborted = false;
+        _pickedFileBytes = bytes;
+        _pickedFileBytesSource = 'readAsBytes';
         _resultsWidget = Center(
           child: Text('readAsBytes completed: ${bytes.lengthInBytes} bytes'),
         );
@@ -425,6 +443,11 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
       _streamingProgressText = null;
       _userAborted = true;
     });
+  }
+
+  void _clearPickedFileBytes() {
+    _pickedFileBytes = null;
+    _pickedFileBytesSource = null;
   }
 
   void _onFileLoading(FilePickerStatus status) {
