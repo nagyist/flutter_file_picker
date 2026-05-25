@@ -243,6 +243,45 @@ class FilePickerWeb extends FilePickerPlatform {
       );
     }
 
+    if (window.isSecureContext) {
+      try {
+        return await _saveFileUsingNativePicker(
+          fileName: fileName,
+          bytes: bytes,
+        );
+      } catch (error) {
+        if (_isAbortError(error)) {
+          return null;
+        }
+      }
+    }
+
+    return _saveFileUsingBlobDownload(fileName: fileName, bytes: bytes);
+  }
+
+  Future<String?> _saveFileUsingNativePicker({
+    required String fileName,
+    required Uint8List bytes,
+  }) async {
+    final JSPromise<FileSystemFileHandle> pickerPromise = showSaveFilePicker();
+    final FileSystemFileHandle fileHandle = await pickerPromise.toDart;
+    final FileSystemWritableFileStream writableFileStream = await fileHandle
+        .createWritable()
+        .toDart;
+
+    try {
+      await writableFileStream.write(bytes.toJS).toDart;
+    } finally {
+      await writableFileStream.close().toDart;
+    }
+
+    return null;
+  }
+
+  Future<String?> _saveFileUsingBlobDownload({
+    required String fileName,
+    required Uint8List bytes,
+  }) async {
     final blob = Blob([bytes.toJS].toJS);
     final url = URL.createObjectURL(blob);
 
@@ -257,6 +296,10 @@ class FilePickerWeb extends FilePickerPlatform {
     // Release the Blob URL after the download started.
     URL.revokeObjectURL(url);
     return null;
+  }
+
+  bool _isAbortError(Object error) {
+    return error.toString().contains('AbortError');
   }
 
   static String _fileType(FileType type, List<String>? allowedExtensions) {
@@ -315,3 +358,6 @@ class FilePickerWeb extends FilePickerPlatform {
     }
   }
 }
+
+@JS('showSaveFilePicker')
+external JSPromise<FileSystemFileHandle> showSaveFilePicker();

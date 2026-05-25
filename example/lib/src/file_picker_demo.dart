@@ -102,17 +102,19 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
         printInDebug("pickedFiles: $result");
         pickedFiles = result?.files;
       } else {
-        final file = await FilePicker.pickFile(
+        final result = await FilePicker.pickFiles(
           type: _pickingType,
+          allowMultiple: false,
           onFileLoading: _onFileLoading,
           allowedExtensions: _allowedExtensionsFromInput(),
           dialogTitle: _dialogTitleController.text,
           initialDirectory: _initialDirectoryController.text,
           lockParentWindow: _lockParentWindow,
+          withData: _withData,
           androidSafOptions: _androidSafOptionsFromFlags(),
         );
-        printInDebug("pickedFile: $file");
-        pickedFiles = file != null ? [file] : null;
+        printInDebug("pickedFiles: $result");
+        pickedFiles = result?.files;
       }
       hasUserAborted = pickedFiles == null;
     } on PlatformException catch (e) {
@@ -649,7 +651,7 @@ class _FilePickerDemoState extends State<FilePickerDemo> {
       SizedBox(
         width: 120,
         child: FloatingActionButton.extended(
-          onPressed: _saveFile,
+          onPressed: _pickedFileBytes == null ? null : _saveFile,
           label: const Text('Save file'),
           icon: const Icon(Icons.save_as),
         ),
