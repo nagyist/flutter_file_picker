@@ -50,15 +50,15 @@ class MethodChannelFilePicker extends FilePickerPlatform {
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
   }) => _getPath(
-        type,
-        allowMultiple,
-        allowedExtensions,
-        onFileLoading,
-        withData,
-        withReadStream,
-        compressionQuality,
-        androidSafOptions,
-      );
+    type,
+    allowMultiple,
+    allowedExtensions,
+    onFileLoading,
+    withData,
+    withReadStream,
+    compressionQuality,
+    androidSafOptions,
+  );
 
   @override
   Future<void> releaseSAFGrant(String uri) async {
@@ -112,9 +112,9 @@ class MethodChannelFilePicker extends FilePickerPlatform {
     }
     try {
       if (onFileLoading != null) {
-        _eventSubscription = eventChannel
-            .receiveBroadcastStream()
-            .listen((data) {
+        _eventSubscription = eventChannel.receiveBroadcastStream().listen((
+          data,
+        ) {
           if (data is! bool) return;
           onFileLoading(
             data ? FilePickerStatus.picking : FilePickerStatus.done,
@@ -171,9 +171,9 @@ class MethodChannelFilePicker extends FilePickerPlatform {
     try {
       if (onFileLoading != null) {
         onFileLoading(FilePickerStatus.picking);
-        _eventSubscription = eventChannel
-            .receiveBroadcastStream()
-            .listen((data) {
+        _eventSubscription = eventChannel.receiveBroadcastStream().listen((
+          data,
+        ) {
           if (data is! bool) return;
           onFileLoading(
             data ? FilePickerStatus.picking : FilePickerStatus.done,
@@ -181,16 +181,14 @@ class MethodChannelFilePicker extends FilePickerPlatform {
         }, onError: (error) => throw Exception(error));
       }
 
-      final String? savedPath = await methodChannel.invokeMethod<String>(
-        "save",
-        {
-          "fileName": fileName,
-          "fileType": type.name,
-          "initialDirectory": initialDirectory,
-          "allowedExtensions": allowedExtensions,
-          "bytes": bytes,
-        },
-      );
+      final String? savedPath = await methodChannel
+          .invokeMethod<String>("save", {
+            "fileName": fileName,
+            "fileType": type.name,
+            "initialDirectory": initialDirectory,
+            "allowedExtensions": allowedExtensions,
+            "bytes": bytes,
+          });
 
       if (!Platform.isAndroid) {
         await FilePickerUtils.saveBytesToFile(bytes, savedPath);
