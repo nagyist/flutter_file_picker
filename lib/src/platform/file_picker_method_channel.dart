@@ -185,9 +185,9 @@ class MethodChannelFilePicker extends FilePickerPlatform {
           .invokeMethod<String>("save", {
             "fileName": fileName,
             "fileType": type.name,
-            "bytes": bytes,
             "initialDirectory": initialDirectory,
             "allowedExtensions": allowedExtensions,
+            "bytes": bytes,
           });
 
       if (!Platform.isAndroid) {
