@@ -19,7 +19,7 @@ class FilePickerDemo extends StatefulWidget {
 
 class _FilePickerDemoState extends State<FilePickerDemo> {
   static const _saveFileDisabledMessage =
-      'Save file will be disabled because it is not compatible with multiple file selection.';
+      'Save file is disabled because it is not compatible with multiple file selection.';
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();

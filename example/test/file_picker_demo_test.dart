@@ -21,7 +21,7 @@ void main() {
 
     expect(
       find.text(
-        'Save file will be disabled because it is not compatible with multiple file selection.',
+        'Save file is disabled because it is not compatible with multiple file selection.',
       ),
       findsOneWidget,
     );
