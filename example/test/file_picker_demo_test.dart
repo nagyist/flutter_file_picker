@@ -11,30 +11,29 @@ void main() {
     return find.widgetWithText(SwitchListTile, 'Pick multiple files');
   }
 
-  testWidgets(
-    'enabling multi-pick shows warning and disables save file',
-    (tester) async {
-      await tester.pumpWidget(const FilePickerDemo());
+  testWidgets('enabling multi-pick shows warning and disables save file', (
+    tester,
+  ) async {
+    await tester.pumpWidget(const FilePickerDemo());
 
-      await tester.tap(findMultiPickSwitchTile());
-      await tester.pumpAndSettle();
+    await tester.tap(findMultiPickSwitchTile());
+    await tester.pumpAndSettle();
 
-      expect(
-        find.text(
-          'Save file will be disabled because it is not compatible with multiple file selection.',
-        ),
-        findsOneWidget,
-      );
+    expect(
+      find.text(
+        'Save file will be disabled because it is not compatible with multiple file selection.',
+      ),
+      findsOneWidget,
+    );
 
-      final saveFileButton = tester.widget<FloatingActionButton>(
-        findSaveFileButton(),
-      );
+    final saveFileButton = tester.widget<FloatingActionButton>(
+      findSaveFileButton(),
+    );
 
-      expect(saveFileButton.onPressed, isNull);
-      expect(saveFileButton.backgroundColor, Colors.grey.shade700);
-      expect(saveFileButton.foregroundColor, Colors.white70);
-    },
-  );
+    expect(saveFileButton.onPressed, isNull);
+    expect(saveFileButton.backgroundColor, Colors.grey.shade700);
+    expect(saveFileButton.foregroundColor, Colors.white70);
+  });
 
   testWidgets('disabling multi-pick enables save file again', (tester) async {
     await tester.pumpWidget(const FilePickerDemo());
@@ -54,4 +53,3 @@ void main() {
     expect(saveFileButton.foregroundColor, isNull);
   });
 }
-
