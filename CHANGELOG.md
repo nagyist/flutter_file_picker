@@ -9,8 +9,6 @@
 
 ### Android
 - `saveFile` now writes file data using Kotlin Coroutines (`CoroutineScope(Dispatchers.IO).launch`), keeping all I/O off the main thread and preventing UI freezes.
-- Results and errors are posted back to the main thread via `Handler(Looper.getMainLooper())` to complete the Flutter method call.
-- Loading status is dispatched through the event channel at the start and end of the save operation, consistent with the existing pick-file behaviour.
   
 ## 12.0.0-beta.4
 ### General
