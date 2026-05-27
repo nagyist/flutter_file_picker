@@ -4,7 +4,6 @@
 ### iOS
 - Fixed a race condition when dismissing the file picker with a fast swipe, preventing the picker from getting stuck in a `multiple_request` state until app restart. [#2021](https://github.com/miguelpruivo/flutter_file_picker/issues/2021)
 - `saveFile` is now disabled when multi-pick mode is active (`allowMultipleSelection = true`), preventing ambiguous or conflicting save behaviour.
-- File selection order is now preserved when returning results from multi-pick on iOS; files are returned in the same order the user selected them.
 
 ## 12.0.0-beta.4
 ### General
