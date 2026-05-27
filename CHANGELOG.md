@@ -1,3 +1,8 @@
+## NEXT
+### iOS
+- `saveFile` is now disabled when multi-pick mode is active (`allowMultipleSelection = true`), preventing ambiguous or conflicting save behaviour.
+- File selection order is now preserved when returning results from multi-pick on iOS; files are returned in the same order the user selected them.
+
 ## 12.0.0-beta.5
 ### Android / Darwin
 - Fixed `saveFile(bytes: ...)` so native byte handling is preserved on Android and iOS, avoiding the duplicate Dart-side write that could break SAF/content URI saves.
