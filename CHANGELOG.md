@@ -4,6 +4,13 @@
 ### iOS
 - Fixed a race condition when dismissing the file picker with a fast swipe, preventing the picker from getting stuck in a `multiple_request` state until app restart. [#2021](https://github.com/miguelpruivo/flutter_file_picker/issues/2021)
 
+## NEXT
+### iOS
+- `saveFile` now performs file writing on a background thread (`DispatchQueue.global`), preventing UI freezes when saving large files.
+- Loading status is now emitted via the event channel (`onFileLoading`) at the start of the save operation and cleared on completion or cancellation, consistent with Android behaviour.
+- The `UIDocumentPickerViewController` is presented only after the file has been successfully written to disk.
+- Write errors are properly reported back to Flutter without blocking the UI thread.
+
 ## 12.0.0-beta.4
 ### General
 - Added `pickFile()` static method as a convenience wrapper for single file selection, returning `PlatformFile?` directly. [#1469](https://github.com/miguelpruivo/flutter_file_picker/issues/1469)
