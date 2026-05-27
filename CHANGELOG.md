@@ -4,13 +4,13 @@
 
 ### iOS
 - Fixed a race condition when dismissing the file picker with a fast swipe, preventing the picker from getting stuck in a `multiple_request` state until app restart. [#2021](https://github.com/miguelpruivo/flutter_file_picker/issues/2021)
+-  iOS now preserves the selection order when picking multiple files: the list of returned files will match the order in which the user selected them.
+- `saveFile` now performs file writing on a background thread (`DispatchQueue.global`), preventing UI freezes when saving large files.
 
 ### Android
 - `saveFile` now writes file data using Kotlin Coroutines (`CoroutineScope(Dispatchers.IO).launch`), keeping all I/O off the main thread and preventing UI freezes.
 - Results and errors are posted back to the main thread via `Handler(Looper.getMainLooper())` to complete the Flutter method call.
 - Loading status is dispatched through the event channel at the start and end of the save operation, consistent with the existing pick-file behaviour.
-- iOS now preserves the selection order when picking multiple files: the list of returned files will match the order in which the user selected them.
-- `saveFile` now performs file writing on a background thread (`DispatchQueue.global`), preventing UI freezes when saving large files.
   
 ## 12.0.0-beta.4
 ### General
