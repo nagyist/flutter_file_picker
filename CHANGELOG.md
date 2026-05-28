@@ -9,8 +9,8 @@
 
 ### Web
 - Fixed `PlatformFile.readAsBytes()` so files picked on Web can recover data from `blob:` and `data:` URLs when `withData` was not used.
-- Added Web fallback to stream file bytes from `blob:`/`data:` URLs: when supported, the browser's `ReadableStream` yields buffered chunks to reduce memory usage, and on older environments it falls back to loading the full file via `ArrayBuffer`.
-  
+- Added Web fallback to stream file bytes from `blob:`/`data:` URLs: when the `ReadableStream` API is supported.
+
 ## 12.0.0-beta.4
 ### General
 - Added `pickFile()` static method as a convenience wrapper for single file selection, returning `PlatformFile?` directly. [#1469](https://github.com/miguelpruivo/flutter_file_picker/issues/1469)
