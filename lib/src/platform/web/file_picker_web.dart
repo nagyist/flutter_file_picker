@@ -107,7 +107,7 @@ class FilePickerWeb extends FilePickerPlatform {
 
         // If no explicit path was provided and no bytes were loaded into
         // memory, create a fetchable Blob URL from the original File so
-        // callers can later fetch or stream the data (avoids missing path).
+        // callers can later fetch or stream the data.
         if ((blobUrl == null || blobUrl.isEmpty) && (bytes == null)) {
           try {
             blobUrl = URL.createObjectURL(file);
