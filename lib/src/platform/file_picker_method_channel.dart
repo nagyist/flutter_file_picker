@@ -14,14 +14,14 @@ import 'package:file_picker/src/platform/file_picker_platform_interface.dart';
 class MethodChannelFilePicker extends FilePickerPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final MethodChannel methodChannel = MethodChannel(
+  final methodChannel = MethodChannel(
     'miguelruivo.flutter.plugins.filepicker',
     const StandardMethodCodec(),
   );
 
   /// The event channel used to receive real-time updates from the native platform.
   @visibleForTesting
-  final EventChannel eventChannel = const EventChannel(
+  final eventChannel = const EventChannel(
     'miguelruivo.flutter.plugins.filepickerevent',
   );
 
@@ -31,7 +31,7 @@ class MethodChannelFilePicker extends FilePickerPlatform {
   }
 
   static const String _tag = 'MethodChannelFilePicker';
-  static StreamSubscription<dynamic>? _eventSubscription;
+  static StreamSubscription? _eventSubscription;
 
   @override
   Future<FilePickerResult?> pickFiles({

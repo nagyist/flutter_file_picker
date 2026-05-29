@@ -1,6 +1,5 @@
 ## 12.0.0-beta.5
-### Android / Darwin
-- Fixed `saveFile(bytes: ...)` so native byte handling is preserved on Android and iOS, avoiding the duplicate Dart-side write that could break SAF/content URI saves.
+### Android
 - `saveFile` now writes file data using Kotlin Coroutines (`CoroutineScope(Dispatchers.IO).launch`), keeping all I/O off the main thread and preventing UI freezes.
 
 ### iOS
