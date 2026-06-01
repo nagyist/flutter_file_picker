@@ -1,9 +1,7 @@
 ## 12.0.0-beta.6
 ### General
 - Improved `PlatformFile.readAsBytes()` so picked files can be read even when `withData` was not used and the file only has a local `path` or a stream source.
-
-### Windows
-- `FileType.custom` now falls back to `FileType.any` when no `allowedExtensions` are provided, avoiding a null check crash in the Windows file filter builder.
+- `FileType.custom` now shares a consistent `allowedExtensions` validation across platforms, throwing `ArgumentError` when filters are missing or used with a non-custom file type.
 
 ## 12.0.0-beta.5
 ### Android
