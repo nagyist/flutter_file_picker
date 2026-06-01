@@ -121,6 +121,34 @@ class FilePickerUtils {
     return (codeUnit >= 65 && codeUnit <= 90) || // A-Z
         (codeUnit >= 97 && codeUnit <= 122); // a-z
   }
+
+  /// Validates the `allowedExtensions` parameter against the provided [type].
+  ///
+  /// Throws an [ArgumentError] if extension filters are provided while the
+  /// `type` is not `FileType.custom`. Uses a consistent error message across
+  /// platforms.
+  static void validateAllowedExtensions(
+    FileType type,
+    List<String>? allowedExtensions,
+  ) {
+    if (type != FileType.custom && (allowedExtensions?.isNotEmpty ?? false)) {
+      throw ArgumentError.value(
+        allowedExtensions,
+        'allowedExtensions',
+        'Custom extension filters are only allowed with FileType.custom. '
+            'Remove the extension filter or change the FileType to FileType.custom.',
+      );
+    }
+
+    if (type == FileType.custom &&
+        (allowedExtensions == null || allowedExtensions.isEmpty)) {
+      throw ArgumentError.value(
+        allowedExtensions,
+        'allowedExtensions',
+        'When using FileType.custom you must provide a non-empty list of allowedExtensions.',
+      );
+    }
+  }
 }
 
 /// Save the given bytes to a file, using a separate [Isolate].

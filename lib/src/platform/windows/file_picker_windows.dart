@@ -234,16 +234,14 @@ class FilePickerWindows extends FilePickerPlatform {
   }
 
   String fileTypeToFileFilter(FileType type, List<String>? allowedExtensions) {
+    FilePickerUtils.validateAllowedExtensions(type, allowedExtensions);
     switch (type) {
       case FileType.any:
         return 'All Files (*.*)\x00*.*\x00\x00';
       case FileType.audio:
         return 'Audios (*.aac,*.midi,*.mp3,*.ogg,*.wav,*.m4a)\x00*.aac;*.midi;*.mp3;*.ogg;*.wav;*.m4a\x00\x00';
       case FileType.custom:
-        if (allowedExtensions == null || allowedExtensions.isEmpty) {
-          return 'All Files (*.*)\x00*.*\x00\x00';
-        }
-        return 'Files (*.${allowedExtensions.join(',*.')})\x00*.${allowedExtensions.join(';*.')}\x00\x00';
+        return 'Files (*.${allowedExtensions!.join(',*.')})\x00*.${allowedExtensions.join(';*.')}\x00\x00';
       case FileType.image:
         return 'Images (*.bmp,*.gif,*.jpeg,*.jpg,*.png,*.webp)\x00*.bmp;*.gif;*.jpeg;*.jpg;*.png;*.webp\x00\x00';
       case FileType.media:

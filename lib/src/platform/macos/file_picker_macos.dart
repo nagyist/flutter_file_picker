@@ -132,14 +132,7 @@ class FilePickerMacOS extends FilePickerPlatform {
     FileType type,
     List<String>? allowedExtensions,
   ) {
-    if (type != FileType.custom && (allowedExtensions?.isNotEmpty ?? false)) {
-      throw ArgumentError.value(
-        allowedExtensions,
-        'allowedExtensions',
-        'Custom extension filters are only allowed with FileType.custom. '
-            'Remove the extension filter or change the FileType to FileType.custom.',
-      );
-    }
+    FilePickerUtils.validateAllowedExtensions(type, allowedExtensions);
     switch (type) {
       case FileType.any:
         return [];
