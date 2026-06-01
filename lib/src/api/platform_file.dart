@@ -109,9 +109,19 @@ class PlatformFile {
   Future<Uint8List> readAsBytes() async {
     if (bytes != null) return bytes!;
 
+    if (readStream != null) {
+      final buffer = <int>[];
+      await for (final chunk in readStream!) {
+        buffer.addAll(chunk);
+      }
+      return Uint8List.fromList(buffer);
+    }
+
     if (kIsWeb) {
       final fetchedBytes = await fetchBytesFromWebPath(path);
       if (fetchedBytes != null) return fetchedBytes;
+    } else if (path != null) {
+      return xFile.readAsBytes();
     }
 
     throw StateError(

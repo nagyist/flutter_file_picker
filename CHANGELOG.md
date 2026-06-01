@@ -1,3 +1,7 @@
+## 12.0.0-beta.6
+### General
+- Improved `PlatformFile.readAsBytes()` so picked files can be read even when `withData` was not used and the file only has a local `path` or a stream source.
+
 ## 12.0.0-beta.5
 ### Android / Darwin
 - Fixed `saveFile(bytes: ...)` so native byte handling is preserved on Android and iOS, avoiding the duplicate Dart-side write that could break SAF/content URI saves.

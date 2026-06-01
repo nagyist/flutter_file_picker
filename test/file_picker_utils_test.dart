@@ -52,6 +52,24 @@ void main() {
     });
 
     test(
+      'should read bytes from the file path when bytes are not available',
+      () async {
+        final imageFile = File(imageTestFile);
+        final expectedBytes = imageFile.readAsBytesSync();
+
+        final platformFile = await FilePickerUtils.createPlatformFile(
+          imageFile,
+          null,
+          null,
+        );
+
+        final bytes = await platformFile.readAsBytes();
+
+        expect(bytes, equals(expectedBytes));
+      },
+    );
+
+    test(
       'should not throw an exception when picking .app files on macOS (.app files on macOS are actually directories but they are treated as files, similar to .exe files on Windows)',
       () async {
         final appFile = File(appTestFilePath);
