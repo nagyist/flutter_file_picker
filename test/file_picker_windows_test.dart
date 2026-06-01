@@ -66,6 +66,20 @@ void main() {
         );
       },
     );
+
+    test('should fall back to any when FileType.custom has no extensions', () {
+      final picker = FilePickerWindows();
+
+      expect(
+        picker.fileTypeToFileFilter(FileType.custom, null),
+        equals('All Files (*.*)\x00*.*\x00\x00'),
+      );
+
+      expect(
+        picker.fileTypeToFileFilter(FileType.custom, []),
+        equals('All Files (*.*)\x00*.*\x00\x00'),
+      );
+    });
   });
 
   group('validateFileName()', () {
