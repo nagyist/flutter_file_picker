@@ -35,14 +35,17 @@ Future<PlatformFile> createPlatformFile(
   Uint8List? bytes,
   Stream<List<int>>? readStream,
 ) async {
-  final f = file as File;
-  return PlatformFile(
-    bytes: bytes,
-    name: basename(f.path),
-    path: f.path,
-    readStream: readStream,
-    size: f.existsSync() ? f.lengthSync() : 0,
-  );
+  if (file case final File nativeFile) {
+    return PlatformFile(
+      bytes: bytes,
+      name: basename(nativeFile.path),
+      path: nativeFile.path,
+      readStream: readStream,
+      size: nativeFile.existsSync() ? nativeFile.lengthSync() : 0,
+    );
+  }
+
+  throw ArgumentError('Expected file to be a File.');
 }
 
 Future<String?> runExecutableWithArguments(
