@@ -2,7 +2,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
 import '_file_utils_web.dart'
-    if (dart.library.io) '_file_utils_io.dart' as impl;
+    if (dart.library.io) '_file_utils_io.dart'
+    as impl;
 
 /// Utility class for [FilePicker] that provides common helper methods
 /// used across different platform implementations.
@@ -22,8 +23,7 @@ class FilePickerUtils {
     List<String> filePaths,
     bool withReadStream,
     bool withData,
-  ) =>
-      impl.filePathsToPlatformFiles(filePaths, withReadStream, withData);
+  ) => impl.filePathsToPlatformFiles(filePaths, withReadStream, withData);
 
   /// Creates a [PlatformFile] instance from a [File] object.
   ///
@@ -35,8 +35,7 @@ class FilePickerUtils {
     dynamic file,
     Uint8List? bytes,
     Stream<List<int>>? readStream,
-  ) =>
-      impl.createPlatformFile(file, bytes, readStream);
+  ) => impl.createPlatformFile(file, bytes, readStream);
 
   /// Runs an executable with the given arguments and returns the output.
   ///
@@ -45,8 +44,7 @@ class FilePickerUtils {
   static Future<String?> runExecutableWithArguments(
     String executable,
     List<String> arguments,
-  ) =>
-      impl.runExecutableWithArguments(executable, arguments);
+  ) => impl.runExecutableWithArguments(executable, arguments);
 
   /// Checks if an executable exists on the system path using `which`.
   ///
