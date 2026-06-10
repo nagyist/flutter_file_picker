@@ -76,8 +76,7 @@ class FilePickerUtils {
   /// Validates the `allowedExtensions` parameter against the provided [type].
   ///
   /// Throws an [ArgumentError] if extension filters are provided while the
-  /// `type` is not `FileType.custom`. Uses a consistent error message across
-  /// platforms.
+  /// `type` is not `FileType.custom`.
   static void validateAllowedExtensions(
     FileType type,
     List<String>? allowedExtensions,
