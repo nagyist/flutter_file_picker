@@ -12,7 +12,7 @@ import 'package:file_picker/src/api/android_saf_options.dart';
 
 import 'package:file_picker/src/api/exceptions.dart';
 import 'package:file_picker/src/platform/file_picker_platform_interface.dart';
-import 'package:file_picker/src/file_picker_utils.dart';
+import 'package:file_picker/src/utils/file_picker_utils.dart';
 import 'package:file_picker/src/platform/windows/file_picker_windows_ffi_types.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
