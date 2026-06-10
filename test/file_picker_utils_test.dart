@@ -100,8 +100,6 @@ void main() {
 
         final platformFiles = await FilePickerUtils.filePathsToPlatformFiles(
           filePaths,
-          false,
-          false,
         );
 
         expect(platformFiles.length, equals(filePaths.length));
@@ -139,8 +137,6 @@ void main() {
 
         final platformFiles = await FilePickerUtils.filePathsToPlatformFiles(
           filePaths,
-          false,
-          false,
         );
 
         expect(platformFiles.length, equals(filePaths.length));
@@ -154,8 +150,7 @@ void main() {
 
         final platformFiles = await FilePickerUtils.filePathsToPlatformFiles(
           filePaths,
-          true,
-          false,
+          withReadStream: true,
         );
 
         expect(platformFiles.length, equals(filePaths.length));
@@ -169,8 +164,7 @@ void main() {
 
         final platformFiles = await FilePickerUtils.filePathsToPlatformFiles(
           filePaths,
-          false,
-          true,
+          withData: true,
         );
 
         expect(platformFiles.length, equals(filePaths.length));

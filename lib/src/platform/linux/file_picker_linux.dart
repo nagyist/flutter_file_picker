@@ -94,8 +94,8 @@ class FilePickerLinux extends FilePickerPlatform {
     final List<PlatformFile> platformFiles =
         await FilePickerUtils.filePathsToPlatformFiles(
           filePaths,
-          withReadStream,
-          withData,
+          withReadStream: withReadStream,
+          withData: withData,
         );
 
     return FilePickerResult(platformFiles);
@@ -151,7 +151,7 @@ class FilePickerLinux extends FilePickerPlatform {
     final filePaths = uriPaths.map((uri) => uri.toFilePath()).toList();
 
     final List<PlatformFile> platformFiles =
-        await FilePickerUtils.filePathsToPlatformFiles(filePaths, false, false);
+        await FilePickerUtils.filePathsToPlatformFiles(filePaths);
 
     return platformFiles.firstOrNull?.path;
   }

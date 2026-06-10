@@ -58,8 +58,8 @@ class FilePickerWindows extends FilePickerPlatform {
       final filePaths = fileNames;
       final platformFiles = await FilePickerUtils.filePathsToPlatformFiles(
         filePaths,
-        withReadStream,
-        withData,
+        withReadStream: withReadStream,
+        withData: withData,
       );
 
       returnValue = FilePickerResult(platformFiles);

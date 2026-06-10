@@ -20,10 +20,14 @@ class FilePickerUtils {
   /// [withReadStream] if true, the [PlatformFile] will contain a read stream.
   /// [withData] if true, the [PlatformFile] will contain the file bytes (use carefully with large files).
   static Future<List<PlatformFile>> filePathsToPlatformFiles(
-    List<String> filePaths,
-    bool withReadStream,
-    bool withData,
-  ) => impl.filePathsToPlatformFiles(filePaths, withReadStream, withData);
+    List<String> filePaths, {
+    bool withReadStream = false,
+    bool withData = false,
+  }) => impl.filePathsToPlatformFiles(
+    filePaths,
+    withReadStream: withReadStream,
+    withData: withData,
+  );
 
   /// Creates a [PlatformFile] instance from a [File] object.
   ///

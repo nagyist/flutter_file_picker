@@ -72,8 +72,8 @@ class FilePickerMacOS extends FilePickerPlatform {
     final List<PlatformFile> platformFiles =
         await FilePickerUtils.filePathsToPlatformFiles(
           filePaths,
-          withReadStream,
-          withData,
+          withReadStream: withReadStream,
+          withData: withData,
         );
 
     return FilePickerResult(platformFiles);

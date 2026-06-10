@@ -6,10 +6,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:path/path.dart';
 
 Future<List<PlatformFile>> filePathsToPlatformFiles(
-  List<String> filePaths,
-  bool withReadStream,
-  bool withData,
-) {
+  List<String> filePaths, {
+  bool withReadStream = false,
+  bool withData = false,
+}) {
   return Future.wait(
     filePaths.where((String filePath) => filePath.isNotEmpty).map((
       String filePath,

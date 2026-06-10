@@ -2,10 +2,10 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 
 Future<List<PlatformFile>> filePathsToPlatformFiles(
-  List<String> filePaths,
-  bool withReadStream,
-  bool withData,
-) => throw UnsupportedError(
+  List<String> filePaths, {
+  bool withReadStream = false,
+  bool withData = false,
+}) => throw UnsupportedError(
   'filePathsToPlatformFiles is only supported on native platforms',
 );
 
