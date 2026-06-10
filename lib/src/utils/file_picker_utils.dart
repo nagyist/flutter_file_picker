@@ -32,8 +32,8 @@ class FilePickerUtils {
   /// Creates a [PlatformFile] instance from a [File] object.
   ///
   /// [file] is the source file.
-  /// [bytes] are the file bytes (optional).
-  /// [readStream] is a stream of the file content (optional).
+  /// [bytes] are the file bytes.
+  /// [readStream] is a stream of the file content.
   @visibleForTesting
   static Future<PlatformFile> createPlatformFile(
     Object file,
