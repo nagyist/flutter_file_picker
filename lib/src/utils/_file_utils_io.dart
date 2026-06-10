@@ -69,21 +69,23 @@ Future<String> isExecutableOnPath(String executable) async {
 }
 
 Future<void> saveBytesToFile(Uint8List? bytes, String? path) async {
-  if (path != null && bytes != null && bytes.isNotEmpty) {
-    final receivePort = ReceivePort();
-    final transferable = TransferableTypedData.fromList([bytes]);
+  if (path == null || bytes == null || bytes.isEmpty) {
+    return;
+  }
 
-    await Isolate.spawn(_saveBytesIsolateEntry, [
-      receivePort.sendPort,
-      path,
-      transferable,
-    ]);
+  final receivePort = ReceivePort();
+  final transferable = TransferableTypedData.fromList([bytes]);
 
-    final result = await receivePort.first;
-    receivePort.close();
-    if (result is Exception) {
-      throw result;
-    }
+  await Isolate.spawn(_saveBytesIsolateEntry, [
+    receivePort.sendPort,
+    path,
+    transferable,
+  ]);
+
+  final result = await receivePort.first;
+  receivePort.close();
+  if (result is Exception) {
+    throw result;
   }
 }
 
