@@ -44,7 +44,7 @@ class FilePickerUtils {
   /// Runs an executable with the given arguments and returns the output.
   ///
   /// Returns the trimmed stdout as a [String], or null if the process fails
-  /// (exit code != 0) or produces no output.
+  /// or produces no output.
   static Future<String?> runExecutableWithArguments(
     String executable,
     List<String> arguments,
