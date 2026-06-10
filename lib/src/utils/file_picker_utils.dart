@@ -13,12 +13,10 @@ class FilePickerUtils {
 
   /// Converts a list of file paths into a list of [PlatformFile]s.
   ///
-  /// This method is useful when the platform file picker returns a list of paths
-  /// and we need to convert them into the plugin's internal representation.
-  ///
-  /// [filePaths] is the list of absolute paths to the selected files.
-  /// [withReadStream] if true, the [PlatformFile] will contain a read stream.
-  /// [withData] if true, the [PlatformFile] will contain the file bytes (use carefully with large files).
+  /// The [filePaths] is the list of absolute paths to the selected files.
+  /// If [withReadStream] is true, the [PlatformFile] will contain a readable [Stream] of the file contents.
+  /// If [withData] is true, the [PlatformFile] will contain the file bytes.
+  /// This option should be used with caution, due to potentially loading large files in one [Uint8List].
   static Future<List<PlatformFile>> filePathsToPlatformFiles(
     List<String> filePaths, {
     bool withReadStream = false,
@@ -31,9 +29,10 @@ class FilePickerUtils {
 
   /// Creates a [PlatformFile] instance from a [File] object.
   ///
-  /// [file] is the source file.
-  /// [bytes] are the file bytes.
-  /// [readStream] is a stream of the file content.
+  /// The [file] is the source file.
+  /// This is typed as [Object] to satisfy restrictions around conditional imports.
+  /// The [bytes] are the file bytes.
+  /// The [readStream] is a [Stream] of the file content.
   @visibleForTesting
   static Future<PlatformFile> createPlatformFile(
     Object file,
@@ -73,10 +72,10 @@ class FilePickerUtils {
         (codeUnit >= 97 && codeUnit <= 122); // a-z
   }
 
-  /// Validates the `allowedExtensions` parameter against the provided [type].
+  /// Validates the [allowedExtensions] parameter against the provided [type].
   ///
   /// Throws an [ArgumentError] if extension filters are provided while the
-  /// `type` is not `FileType.custom`.
+  /// [type] is not [FileType.custom].
   static void validateAllowedExtensions(
     FileType type,
     List<String>? allowedExtensions,
