@@ -10,7 +10,7 @@ Future<List<PlatformFile>> filePathsToPlatformFiles(
 );
 
 Future<PlatformFile> createPlatformFile(
-  dynamic file,
+  Object file,
   Uint8List? bytes,
   Stream<List<int>>? readStream,
 ) => throw UnsupportedError(
