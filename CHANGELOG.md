@@ -2,7 +2,8 @@
 ### General
 - Improved `PlatformFile.readAsBytes()` so picked files can be read even when `withData` was not used and the file only has a local `path` or a stream source.
 - `FileType.custom` now shares a consistent `allowedExtensions` validation across platforms, throwing `ArgumentError` when filters are missing or used with a non-custom file type.
-- Change value of both explicit request code constants: REQUEST_CODE (0x4F50) and SAVE_FILE_CODE (0x4F51).
+ ### Android
+- Define REQUEST_CODE = 0x4F50 and SAVE_FILE_CODE = 0x4F51 in FilePickerDelegate.kt so onActivityResult cleanly distinguishes picker vs save flows and to prevent unresolved references when extracting hashCode under a forced JVM version.
 
 ## 12.0.0-beta.5
 ### Android
