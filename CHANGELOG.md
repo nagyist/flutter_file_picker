@@ -4,7 +4,7 @@
 - `FileType.custom` now shares a consistent `allowedExtensions` validation across platforms, throwing `ArgumentError` when filters are missing or used with a non-custom file type.
 
  ### Android
-- Define REQUEST_CODE = 0x4F50 and SAVE_FILE_CODE = 0x4F51 in FilePickerDelegate.kt so onActivityResult cleanly distinguishes picker vs save flows and to prevent unresolved references when extracting hashCode under a forced JVM version.
+- Prevents unresolved references when extracting hashCode under a forced JVM version. [#2070](https://github.com/miguelpruivo/flutter_file_picker/issues/2070)
 
 ## 12.0.0-beta.5
 ### Android
