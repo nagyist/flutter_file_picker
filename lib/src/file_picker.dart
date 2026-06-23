@@ -87,6 +87,7 @@ abstract final class FilePicker {
     bool readSequential = false,
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
+    int? parentWindowHandle,
   }) {
     return FilePickerPlatform.instance.pickFiles(
       dialogTitle: dialogTitle,
@@ -102,6 +103,7 @@ abstract final class FilePicker {
       readSequential: readSequential,
       cancelUploadOnWindowBlur: cancelUploadOnWindowBlur,
       androidSafOptions: androidSafOptions,
+      parentWindowHandle: parentWindowHandle,
     );
   }
 
@@ -221,12 +223,14 @@ abstract final class FilePicker {
     bool lockParentWindow = false,
     String? initialDirectory,
     AndroidSAFOptions? androidSafOptions,
+    int? parentWindowHandle,
   }) {
     return FilePickerPlatform.instance.getDirectoryPath(
       dialogTitle: dialogTitle,
       lockParentWindow: lockParentWindow,
       initialDirectory: initialDirectory,
       androidSafOptions: androidSafOptions,
+      parentWindowHandle: parentWindowHandle,
     );
   }
 
@@ -272,6 +276,7 @@ abstract final class FilePicker {
     required Uint8List bytes,
     Function(FilePickerStatus)? onFileLoading,
     bool lockParentWindow = false,
+    int? parentWindowHandle,
   }) {
     return FilePickerPlatform.instance.saveFile(
       dialogTitle: dialogTitle,
@@ -282,6 +287,7 @@ abstract final class FilePicker {
       bytes: bytes,
       onFileLoading: onFileLoading,
       lockParentWindow: lockParentWindow,
+      parentWindowHandle: parentWindowHandle,
     );
   }
 

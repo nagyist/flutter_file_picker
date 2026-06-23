@@ -43,6 +43,7 @@ abstract class FilePickerPlatform extends PlatformInterface {
     bool readSequential = false,
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
+    int? parentWindowHandle,
   }) async {
     throw UnimplementedError('pickFiles() has not been implemented.');
   }
@@ -76,6 +77,7 @@ abstract class FilePickerPlatform extends PlatformInterface {
     bool lockParentWindow = false,
     String? initialDirectory,
     AndroidSAFOptions? androidSafOptions,
+    int? parentWindowHandle,
   }) async {
     throw UnimplementedError('getDirectoryPath() has not been implemented.');
   }
@@ -91,6 +93,7 @@ abstract class FilePickerPlatform extends PlatformInterface {
     required Uint8List bytes,
     Function(FilePickerStatus)? onFileLoading,
     bool lockParentWindow = false,
+    int? parentWindowHandle,
   }) async {
     throw UnimplementedError('saveFile() has not been implemented.');
   }
