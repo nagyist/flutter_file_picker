@@ -1,5 +1,9 @@
+## 12.0.0-beta.8
+### Android
+- Decodes images with `inSampleSize` in `compressImage` to prevent excessive memory usage and `OutOfMemoryError` on large images. [#2083](https://github.com/miguelpruivo/flutter_file_picker/pull/2083)
+
 ## 12.0.0-beta.7
-## Web
+### Web
 - Ensures `XFile.fromData` is only used on the web if bytes is not null, preventing potential null check errors.
 
 ## 12.0.0-beta.6
