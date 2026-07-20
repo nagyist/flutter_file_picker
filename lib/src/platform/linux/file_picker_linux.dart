@@ -4,6 +4,8 @@ import 'dart:typed_data';
 
 import 'package:file_picker/src/api/file_picker_types.dart';
 import 'package:file_picker/src/api/android_saf_options.dart';
+import 'package:file_picker/src/api/windows_options.dart';
+import 'package:file_picker/src/api/linux_options.dart';
 import 'package:file_picker/src/platform/file_picker_platform_interface.dart';
 import 'package:file_picker/src/api/file_picker_result.dart';
 import 'package:file_picker/src/api/platform_file.dart';
@@ -46,12 +48,14 @@ class FilePickerLinux extends FilePickerPlatform {
     int compressionQuality = 0,
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
   }) async {
     final filter = Filter(type, allowedExtensions);
     Map<String, DBusValue> xdpOption = {
       'handle_token': DBusString('flutter_picker'),
       'multiple': DBusBoolean(allowMultiple),
-      'modal': DBusBoolean(lockParentWindow),
+      'modal': DBusBoolean(linuxOptions.lockParentWindow || lockParentWindow),
       'filters': filter.toDBusArray(),
     };
     if (initialDirectory != null) {
@@ -107,11 +111,13 @@ class FilePickerLinux extends FilePickerPlatform {
     bool lockParentWindow = false,
     String? initialDirectory,
     AndroidSAFOptions? androidSafOptions,
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
   }) async {
     Map<String, DBusValue> xdpOption = {
       'handle_token': DBusString('flutter_picker'),
       'directory': DBusBoolean(true),
-      'modal': DBusBoolean(lockParentWindow),
+      'modal': DBusBoolean(linuxOptions.lockParentWindow || lockParentWindow),
     };
     if (initialDirectory != null) {
       final Uint8List tmp = _encodeDirectory(initialDirectory);
@@ -166,11 +172,13 @@ class FilePickerLinux extends FilePickerPlatform {
     required Uint8List bytes,
     Function(FilePickerStatus)? onFileLoading,
     bool lockParentWindow = false,
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
   }) async {
     Map<String, DBusValue> xdpOption = {
       'handle_token': DBusString('flutter_picker'),
       'current_name': DBusString(fileName),
-      'modal': DBusBoolean(lockParentWindow),
+      'modal': DBusBoolean(linuxOptions.lockParentWindow || lockParentWindow),
     };
     if (initialDirectory != null) {
       final Uint8List tmp = _encodeDirectory(initialDirectory);

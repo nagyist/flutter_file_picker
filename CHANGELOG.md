@@ -2,6 +2,10 @@
 ### Android
 - Decodes images with `inSampleSize` in `compressImage` to prevent excessive memory usage and `OutOfMemoryError` on large images. [#2083](https://github.com/miguelpruivo/flutter_file_picker/pull/2083)
 
+### Windows & Linux
+- Added `WindowsOptions` (with `parentWindowHandle` and `lockParentWindow`) and `LinuxOptions` (with `lockParentWindow`). [#2079](https://github.com/miguelpruivo/flutter_file_picker/pull/2079)
+- Deprecated top-level `lockParentWindow` parameter in favor of `WindowsOptions.lockParentWindow` and `LinuxOptions.lockParentWindow`.
+
 ## 12.0.0-beta.7
 ### Web
 - Ensures `XFile.fromData` is only used on the web if bytes is not null, preventing potential null check errors.

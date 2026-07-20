@@ -6,6 +6,8 @@ import 'package:file_picker/src/api/file_picker_result.dart';
 import 'package:file_picker/src/api/platform_file.dart';
 import 'package:file_picker/src/api/file_picker_types.dart';
 import 'package:file_picker/src/api/android_saf_options.dart';
+import 'package:file_picker/src/api/windows_options.dart';
+import 'package:file_picker/src/api/linux_options.dart';
 
 abstract final class FilePicker {
   /// Retrieves the file(s) from the underlying platform
@@ -30,8 +32,8 @@ abstract final class FilePicker {
   ///
   /// If [lockParentWindow] is set, the child window (file picker window) will
   /// stay in front of the Flutter window until it is closed (like a modal
-  /// window). This parameter works only on Windows desktop.
-  /// On macOS the parent window will be locked and this parameter is ignored.
+  /// window). This parameter is deprecated; use [WindowsOptions.lockParentWindow] or
+  /// [LinuxOptions.lockParentWindow] instead.
   ///
   /// [dialogTitle] can be optionally set on desktop platforms to set the modal window title.
   /// Not supported on macOS. It will be ignored on other platforms.
@@ -47,6 +49,10 @@ abstract final class FilePicker {
   ///
   /// [cancelUploadOnWindowBlur] prevents upload cancellation when window focus is lost.
   /// Only supported on web.
+  ///
+  /// [windowsOptions] can be optionally set to configure Windows-specific options.
+  ///
+  /// [linuxOptions] can be optionally set to configure Linux-specific options.
   ///
   /// The result is wrapped in a [FilePickerResult] which contains helper getters
   /// with useful information regarding the picked [List<PlatformFile>].
@@ -80,6 +86,9 @@ abstract final class FilePicker {
       'Use PlatformFile.readAsByteStream(); this parameter will be removed in a future release',
     )
     bool withReadStream = false,
+    @Deprecated(
+      'Use WindowsOptions.lockParentWindow or LinuxOptions.lockParentWindow instead; this parameter will be removed in a future release.',
+    )
     bool lockParentWindow = false,
     @Deprecated(
       'Use PlatformFile.readAsByteStream(); this parameter will be removed in a future release',
@@ -87,7 +96,8 @@ abstract final class FilePicker {
     bool readSequential = false,
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
-    int? parentWindowHandle,
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
   }) {
     return FilePickerPlatform.instance.pickFiles(
       dialogTitle: dialogTitle,
@@ -103,7 +113,8 @@ abstract final class FilePicker {
       readSequential: readSequential,
       cancelUploadOnWindowBlur: cancelUploadOnWindowBlur,
       androidSafOptions: androidSafOptions,
-      parentWindowHandle: parentWindowHandle,
+      windowsOptions: windowsOptions,
+      linuxOptions: linuxOptions,
     );
   }
 
@@ -121,9 +132,14 @@ abstract final class FilePicker {
     List<String>? allowedExtensions,
     Function(FilePickerStatus)? onFileLoading,
     int compressionQuality = 0,
+    @Deprecated(
+      'Use WindowsOptions.lockParentWindow or LinuxOptions.lockParentWindow instead; this parameter will be removed in a future release.',
+    )
     bool lockParentWindow = false,
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
   }) async {
     final result = await FilePickerPlatform.instance.pickFiles(
       dialogTitle: dialogTitle,
@@ -139,6 +155,8 @@ abstract final class FilePicker {
       readSequential: false,
       cancelUploadOnWindowBlur: cancelUploadOnWindowBlur,
       androidSafOptions: androidSafOptions,
+      windowsOptions: windowsOptions,
+      linuxOptions: linuxOptions,
     );
 
     return result?.files.firstOrNull;
@@ -199,14 +217,18 @@ abstract final class FilePicker {
   ///
   /// If [lockParentWindow] is set, the child window (file picker window) will
   /// stay in front of the Flutter window until it is closed (like a modal
-  /// window). This parameter works only on Windows desktop.
-  /// On macOS the parent window will be locked and this parameter is ignored.
+  /// window). This parameter is deprecated; use [WindowsOptions.lockParentWindow] or
+  /// [LinuxOptions.lockParentWindow] instead.
   ///
   /// [initialDirectory] can be optionally set to an absolute path to specify
   /// where the dialog should open. Only supported on Linux, macOS, and Windows.
   /// On macOS the home directory shortcut (~/) is not necessary and passing it will be ignored.
   /// On macOS if the [initialDirectory] is invalid, the user directory or previously valid directory
   /// will be used.
+  ///
+  /// [windowsOptions] can be optionally set to configure Windows-specific options.
+  ///
+  /// [linuxOptions] can be optionally set to configure Linux-specific options.
   ///
   /// Returns a [Future<String?>] which resolves to the absolute path of the selected directory,
   /// if the user selected a directory. Returns `null` if the user aborted the dialog or if the
@@ -220,17 +242,22 @@ abstract final class FilePicker {
   /// `content://` document tree URI instead of an absolute path.
   static Future<String?> getDirectoryPath({
     String? dialogTitle,
+    @Deprecated(
+      'Use WindowsOptions.lockParentWindow or LinuxOptions.lockParentWindow instead; this parameter will be removed in a future release.',
+    )
     bool lockParentWindow = false,
     String? initialDirectory,
     AndroidSAFOptions? androidSafOptions,
-    int? parentWindowHandle,
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
   }) {
     return FilePickerPlatform.instance.getDirectoryPath(
       dialogTitle: dialogTitle,
       lockParentWindow: lockParentWindow,
       initialDirectory: initialDirectory,
       androidSafOptions: androidSafOptions,
-      parentWindowHandle: parentWindowHandle,
+      windowsOptions: windowsOptions,
+      linuxOptions: linuxOptions,
     );
   }
 
@@ -264,7 +291,12 @@ abstract final class FilePicker {
   ///
   /// If [lockParentWindow] is set, the child window (file picker window) will
   /// stay in front of the Flutter window until it is closed (like a modal
-  /// window). This parameter works only on Windows desktop.
+  /// window). This parameter is deprecated; use [WindowsOptions.lockParentWindow] or
+  /// [LinuxOptions.lockParentWindow] instead.
+  ///
+  /// [windowsOptions] can be optionally set to configure Windows-specific options.
+  ///
+  /// [linuxOptions] can be optionally set to configure Linux-specific options.
   ///
   /// Returns `null` if aborted.
   static Future<String?> saveFile({
@@ -275,8 +307,12 @@ abstract final class FilePicker {
     List<String>? allowedExtensions,
     required Uint8List bytes,
     Function(FilePickerStatus)? onFileLoading,
+    @Deprecated(
+      'Use WindowsOptions.lockParentWindow or LinuxOptions.lockParentWindow instead; this parameter will be removed in a future release.',
+    )
     bool lockParentWindow = false,
-    int? parentWindowHandle,
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
   }) {
     return FilePickerPlatform.instance.saveFile(
       dialogTitle: dialogTitle,
@@ -287,7 +323,8 @@ abstract final class FilePicker {
       bytes: bytes,
       onFileLoading: onFileLoading,
       lockParentWindow: lockParentWindow,
-      parentWindowHandle: parentWindowHandle,
+      windowsOptions: windowsOptions,
+      linuxOptions: linuxOptions,
     );
   }
 

@@ -2,6 +2,8 @@ import 'package:file_picker/src/api/file_picker_types.dart';
 import 'package:file_picker/src/api/platform_file.dart';
 import 'package:file_picker/src/api/file_picker_result.dart';
 import 'package:file_picker/src/api/android_saf_options.dart';
+import 'package:file_picker/src/api/windows_options.dart';
+import 'package:file_picker/src/api/linux_options.dart';
 import 'package:file_picker/src/platform/file_picker_platform_interface.dart';
 import 'package:file_picker/src/utils/file_picker_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -55,6 +57,8 @@ class FilePickerMacOS extends FilePickerPlatform {
     bool readSequential = false,
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
   }) async {
     final fileFilter = fileTypeToFileFilter(type, allowedExtensions);
 
@@ -85,6 +89,8 @@ class FilePickerMacOS extends FilePickerPlatform {
     bool lockParentWindow = false,
     String? initialDirectory,
     AndroidSAFOptions? androidSafOptions,
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
   }) async {
     final String? directoryPath = await methodChannel.invokeMethod<String>(
       'getDirectoryPath',
@@ -106,6 +112,8 @@ class FilePickerMacOS extends FilePickerPlatform {
     required Uint8List bytes,
     Function(FilePickerStatus)? onFileLoading,
     bool lockParentWindow = false,
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
   }) async {
     final fileFilter = fileTypeToFileFilter(type, allowedExtensions);
 
