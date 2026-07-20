@@ -3,7 +3,7 @@
 - Decodes images with `inSampleSize` in `compressImage` to prevent excessive memory usage and `OutOfMemoryError` on large images. [#2083](https://github.com/miguelpruivo/flutter_file_picker/pull/2083)
 
 ### Desktop & Web
-- Added `WindowsOptions` (with `parentWindowHandle` and `lockParentWindow`), `LinuxOptions` (with `lockParentWindow`), and `WebOptions` (with `cancelUploadOnWindowBlur`). [#2079](https://github.com/miguelpruivo/flutter_file_picker/pull/2079)
+- Added `WindowsOptions` (with `parentWindowHandle` and `lockParentWindow`), `LinuxOptions` (with `parentWindow` and `lockParentWindow`), and `WebOptions` (with `cancelUploadOnWindowBlur`). [#2079](https://github.com/miguelpruivo/flutter_file_picker/pull/2079)
 - Deprecated top-level `lockParentWindow` parameter in favor of `WindowsOptions.lockParentWindow` and `LinuxOptions.lockParentWindow`.
 - Deprecated top-level `cancelUploadOnWindowBlur` parameter in favor of `WebOptions.cancelUploadOnWindowBlur`.
 

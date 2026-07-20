@@ -66,7 +66,7 @@ class FilePickerLinux extends FilePickerPlatform {
       xdpOption["current_folder"] = directory;
     }
     final replyPath = await _xdpChooser.callOpenFile(
-      "",
+      linuxOptions.parentWindow ?? "",
       dialogTitle ?? "flutter picker",
       xdpOption,
     );
@@ -128,7 +128,7 @@ class FilePickerLinux extends FilePickerPlatform {
       xdpOption["current_folder"] = directory;
     }
     final replyPath = await _xdpChooser.callOpenFile(
-      "",
+      linuxOptions.parentWindow ?? "",
       dialogTitle ?? "flutter picker",
       xdpOption,
     );
@@ -191,7 +191,7 @@ class FilePickerLinux extends FilePickerPlatform {
     }
 
     final replyPath = await _xdpChooser.callSaveFile(
-      "",
+      linuxOptions.parentWindow ?? "",
       dialogTitle ?? "flutter picker",
       xdpOption,
     );
