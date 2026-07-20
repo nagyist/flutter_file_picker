@@ -7,7 +7,10 @@ final class LinuxOptions {
   /// as a modal window until closed.
   final bool lockParentWindow;
 
-  /// An optional X11 or Wayland parent window handle identifier
-  /// (e.g. `"x11:0x3a00001"` or `"wayland:handle"`).
+  /// An optional X11 or Wayland parent window handle identifier.
+  ///
+  /// Supports full X11 handles (e.g. `"x11:0x3a00001"`), raw hex X11 strings (e.g. `"0x3a00001"`),
+  /// raw decimal X11 window IDs (e.g. `"60817409"`, automatically formatted as X11 handles),
+  /// or Wayland handle strings (e.g. `"wayland:handle"`).
   final String? parentWindow;
 }

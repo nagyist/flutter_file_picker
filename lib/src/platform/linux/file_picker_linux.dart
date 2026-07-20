@@ -66,7 +66,7 @@ class FilePickerLinux extends FilePickerPlatform {
       xdpOption["current_folder"] = directory;
     }
     final replyPath = await _xdpChooser.callOpenFile(
-      linuxOptions.parentWindow ?? "",
+      _formatParentWindow(linuxOptions.parentWindow),
       dialogTitle ?? "flutter picker",
       xdpOption,
     );
@@ -128,7 +128,7 @@ class FilePickerLinux extends FilePickerPlatform {
       xdpOption["current_folder"] = directory;
     }
     final replyPath = await _xdpChooser.callOpenFile(
-      linuxOptions.parentWindow ?? "",
+      _formatParentWindow(linuxOptions.parentWindow),
       dialogTitle ?? "flutter picker",
       xdpOption,
     );
@@ -191,7 +191,7 @@ class FilePickerLinux extends FilePickerPlatform {
     }
 
     final replyPath = await _xdpChooser.callSaveFile(
-      linuxOptions.parentWindow ?? "",
+      _formatParentWindow(linuxOptions.parentWindow),
       dialogTitle ?? "flutter picker",
       xdpOption,
     );
@@ -228,5 +228,23 @@ class FilePickerLinux extends FilePickerPlatform {
 
   Uint8List _encodeDirectory(String initialDirectory) {
     return Uint8List.fromList([...utf8.encode(initialDirectory), 0]);
+  }
+
+  static String _formatParentWindow(String? parentWindow) {
+    if (parentWindow == null || parentWindow.trim().isEmpty) {
+      return '';
+    }
+    final trimmed = parentWindow.trim();
+    if (trimmed.startsWith('x11:') || trimmed.startsWith('wayland:')) {
+      return trimmed;
+    }
+    if (trimmed.startsWith('0x')) {
+      return 'x11:$trimmed';
+    }
+    final intVal = int.tryParse(trimmed);
+    if (intVal != null) {
+      return 'x11:0x${intVal.toRadixString(16)}';
+    }
+    return trimmed;
   }
 }
