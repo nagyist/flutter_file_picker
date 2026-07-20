@@ -95,15 +95,13 @@ class FilePickerMacOS extends FilePickerPlatform {
     LinuxOptions linuxOptions = const LinuxOptions(),
     WebOptions webOptions = const WebOptions(),
   }) async {
-    final String? directoryPath = await methodChannel.invokeMethod<String>(
-      'getDirectoryPath',
-      <String, dynamic>{
-        'dialogTitle': dialogTitle == null
-            ? null
-            : escapeDialogTitle(dialogTitle),
-        'initialDirectory': escapeInitialDirectory(initialDirectory),
-      },
-    );
+    final String? directoryPath = await methodChannel
+        .invokeMethod<String>('getDirectoryPath', <String, dynamic>{
+          'dialogTitle': dialogTitle == null
+              ? null
+              : escapeDialogTitle(dialogTitle),
+          'initialDirectory': escapeInitialDirectory(initialDirectory),
+        });
 
     return directoryPath;
   }

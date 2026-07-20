@@ -160,21 +160,27 @@ void main() {
       log.clear();
     });
 
-    test('should pass dialogTitle and initialDirectory to method channel', () async {
-      final picker = FilePickerMacOS();
+    test(
+      'should pass dialogTitle and initialDirectory to method channel',
+      () async {
+        final picker = FilePickerMacOS();
 
-      final result = await picker.getDirectoryPath(
-        dialogTitle: 'Select Directory',
-        initialDirectory: '~/Documents',
-      );
+        final result = await picker.getDirectoryPath(
+          dialogTitle: 'Select Directory',
+          initialDirectory: '~/Documents',
+        );
 
-      expect(result, equals('/Users/test/Documents'));
-      expect(log, hasLength(1));
-      expect(log.first.method, equals('getDirectoryPath'));
-      expect(log.first.arguments, equals({
-        'dialogTitle': 'Select Directory',
-        'initialDirectory': 'Documents',
-      }));
-    });
+        expect(result, equals('/Users/test/Documents'));
+        expect(log, hasLength(1));
+        expect(log.first.method, equals('getDirectoryPath'));
+        expect(
+          log.first.arguments,
+          equals({
+            'dialogTitle': 'Select Directory',
+            'initialDirectory': 'Documents',
+          }),
+        );
+      },
+    );
   });
 }
