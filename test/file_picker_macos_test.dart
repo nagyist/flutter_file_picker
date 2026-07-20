@@ -3,6 +3,7 @@ library;
 
 import 'package:file_picker/src/platform/macos/file_picker_macos.dart';
 import 'package:file_picker/src/api/file_picker_types.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -75,42 +76,6 @@ void main() {
       },
     );
   });
-
-  group('escapeDialogTitle()', () {
-    test('should escape backslashes in the title of the dialog', () {
-      final picker = FilePickerMacOS();
-
-      final escapedTitle = picker.escapeDialogTitle(
-        'Please select files that contain a \\:',
-      );
-
-      expect(escapedTitle, equals('Please select files that contain a \\\\:'));
-    });
-
-    test('should escape line breaks in the title of the dialog', () {
-      final picker = FilePickerMacOS();
-
-      final escapedTitle = picker.escapeDialogTitle(
-        'Please continue reading\nafter the line break:',
-      );
-
-      expect(
-        escapedTitle,
-        equals('Please continue reading\\\nafter the line break:'),
-      );
-    });
-
-    test('should escape double quotes in the title of the dialog', () {
-      final picker = FilePickerMacOS();
-
-      final escapedTitle = picker.escapeDialogTitle(
-        'Please select a "quoted" file:',
-      );
-
-      expect(escapedTitle, equals('Please select a \\"quoted\\" file:'));
-    });
-  });
-
   group('escapeInitialDirectory()', () {
     late FilePickerMacOS picker;
 
@@ -140,5 +105,49 @@ void main() {
     test('should handle empty string', () {
       expect(picker.escapeInitialDirectory(''), equals(''));
     });
+  });
+
+  group('getDirectoryPath()', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+
+    final MethodChannel channel = const MethodChannel(
+      'miguelruivo.flutter.plugins.filepicker',
+    );
+    final List<MethodCall> log = <MethodCall>[];
+
+    setUp(() {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+            log.add(methodCall);
+            if (methodCall.method == 'getDirectoryPath') {
+              return '/Users/test/Documents';
+            }
+            return null;
+          });
+      log.clear();
+    });
+
+    test(
+      'should pass dialogTitle and initialDirectory to method channel',
+      () async {
+        final picker = FilePickerMacOS();
+
+        final result = await picker.getDirectoryPath(
+          dialogTitle: 'Select Directory',
+          initialDirectory: '~/Documents',
+        );
+
+        expect(result, equals('/Users/test/Documents'));
+        expect(log, hasLength(1));
+        expect(log.first.method, equals('getDirectoryPath'));
+        expect(
+          log.first.arguments,
+          equals({
+            'dialogTitle': 'Select Directory',
+            'initialDirectory': 'Documents',
+          }),
+        );
+      },
+    );
   });
 }

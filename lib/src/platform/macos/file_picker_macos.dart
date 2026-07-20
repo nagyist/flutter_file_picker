@@ -34,9 +34,7 @@ class FilePickerMacOS extends FilePickerPlatform {
       <String, dynamic>{
         'allowedExtensions': fileFilter,
         'initialDirectory': escapeInitialDirectory(initialDirectory),
-        'dialogTitle': dialogTitle == null
-            ? null
-            : escapeDialogTitle(dialogTitle),
+        'dialogTitle': dialogTitle,
       },
     );
 
@@ -95,12 +93,11 @@ class FilePickerMacOS extends FilePickerPlatform {
     LinuxOptions linuxOptions = const LinuxOptions(),
     WebOptions webOptions = const WebOptions(),
   }) async {
-    final String? directoryPath = await methodChannel.invokeMethod<String>(
-      'getDirectoryPath',
-      <String, dynamic>{
-        'initialDirectory': escapeInitialDirectory(initialDirectory),
-      },
-    );
+    final String? directoryPath = await methodChannel
+        .invokeMethod<String>('getDirectoryPath', <String, dynamic>{
+          'dialogTitle': dialogTitle,
+          'initialDirectory': escapeInitialDirectory(initialDirectory),
+        });
 
     return directoryPath;
   }
@@ -123,9 +120,7 @@ class FilePickerMacOS extends FilePickerPlatform {
 
     final String? savedFilePath = await methodChannel
         .invokeMethod<String>('saveFile', <String, dynamic>{
-          'dialogTitle': escapeDialogTitle(
-            dialogTitle ?? FilePickerUtils.defaultDialogTitle,
-          ),
+          'dialogTitle': dialogTitle ?? FilePickerUtils.defaultDialogTitle,
           'fileName': fileName,
           'initialDirectory': escapeInitialDirectory(initialDirectory),
           'allowedExtensions': fileFilter,
@@ -199,9 +194,4 @@ class FilePickerMacOS extends FilePickerPlatform {
     }
     return initialDirectory;
   }
-
-  String escapeDialogTitle(String dialogTitle) => dialogTitle
-      .replaceAll('\\', '\\\\')
-      .replaceAll('"', '\\"')
-      .replaceAll('\n', '\\\n');
 }
