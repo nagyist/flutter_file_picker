@@ -11,6 +11,9 @@
 - Deprecated top-level `lockParentWindow` parameter in favor of `WindowsOptions.lockParentWindow` and `LinuxOptions.lockParentWindow`.
 - Deprecated top-level `cancelUploadOnWindowBlur` parameter in favor of `WebOptions.cancelUploadOnWindowBlur`.
 
+### macOS
+- Passes the custom `dialogTitle` when selecting a directory via `getDirectoryPath()`. [#2087](https://github.com/miguelpruivo/flutter_file_picker/pull/2087)
+
 ## 12.0.0-beta.7
 ### Web
 - Ensures `XFile.fromData` is only used on the web if bytes is not null, preventing potential null check errors.
