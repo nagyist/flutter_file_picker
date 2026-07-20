@@ -6,6 +6,7 @@ import 'package:file_picker/src/api/file_picker_types.dart';
 import 'package:file_picker/src/api/android_saf_options.dart';
 import 'package:file_picker/src/api/windows_options.dart';
 import 'package:file_picker/src/api/linux_options.dart';
+import 'package:file_picker/src/api/web_options.dart';
 import 'package:file_picker/src/platform/file_picker_platform_interface.dart';
 import 'package:file_picker/src/api/file_picker_result.dart';
 import 'package:file_picker/src/api/platform_file.dart';
@@ -50,6 +51,7 @@ class FilePickerLinux extends FilePickerPlatform {
     AndroidSAFOptions? androidSafOptions,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) async {
     final filter = Filter(type, allowedExtensions);
     Map<String, DBusValue> xdpOption = {
@@ -113,6 +115,7 @@ class FilePickerLinux extends FilePickerPlatform {
     AndroidSAFOptions? androidSafOptions,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) async {
     Map<String, DBusValue> xdpOption = {
       'handle_token': DBusString('flutter_picker'),
@@ -174,6 +177,7 @@ class FilePickerLinux extends FilePickerPlatform {
     bool lockParentWindow = false,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) async {
     Map<String, DBusValue> xdpOption = {
       'handle_token': DBusString('flutter_picker'),

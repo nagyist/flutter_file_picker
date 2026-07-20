@@ -8,6 +8,7 @@ import 'package:file_picker/src/api/file_picker_types.dart';
 import 'package:file_picker/src/api/android_saf_options.dart';
 import 'package:file_picker/src/api/windows_options.dart';
 import 'package:file_picker/src/api/linux_options.dart';
+import 'package:file_picker/src/api/web_options.dart';
 
 abstract final class FilePicker {
   /// Retrieves the file(s) from the underlying platform
@@ -48,11 +49,13 @@ abstract final class FilePicker {
   /// Not supported on macOS.
   ///
   /// [cancelUploadOnWindowBlur] prevents upload cancellation when window focus is lost.
-  /// Only supported on web.
+  /// This parameter is deprecated; use [WebOptions.cancelUploadOnWindowBlur] instead.
   ///
   /// [windowsOptions] can be optionally set to configure Windows-specific options.
   ///
   /// [linuxOptions] can be optionally set to configure Linux-specific options.
+  ///
+  /// [webOptions] can be optionally set to configure Web-specific options.
   ///
   /// The result is wrapped in a [FilePickerResult] which contains helper getters
   /// with useful information regarding the picked [List<PlatformFile>].
@@ -94,10 +97,14 @@ abstract final class FilePicker {
       'Use PlatformFile.readAsByteStream(); this parameter will be removed in a future release',
     )
     bool readSequential = false,
+    @Deprecated(
+      'Use WebOptions.cancelUploadOnWindowBlur instead; this parameter will be removed in a future release.',
+    )
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) {
     return FilePickerPlatform.instance.pickFiles(
       dialogTitle: dialogTitle,
@@ -115,6 +122,7 @@ abstract final class FilePicker {
       androidSafOptions: androidSafOptions,
       windowsOptions: windowsOptions,
       linuxOptions: linuxOptions,
+      webOptions: webOptions,
     );
   }
 
@@ -136,10 +144,14 @@ abstract final class FilePicker {
       'Use WindowsOptions.lockParentWindow or LinuxOptions.lockParentWindow instead; this parameter will be removed in a future release.',
     )
     bool lockParentWindow = false,
+    @Deprecated(
+      'Use WebOptions.cancelUploadOnWindowBlur instead; this parameter will be removed in a future release.',
+    )
     bool cancelUploadOnWindowBlur = true,
     AndroidSAFOptions? androidSafOptions,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) async {
     final result = await FilePickerPlatform.instance.pickFiles(
       dialogTitle: dialogTitle,
@@ -157,6 +169,7 @@ abstract final class FilePicker {
       androidSafOptions: androidSafOptions,
       windowsOptions: windowsOptions,
       linuxOptions: linuxOptions,
+      webOptions: webOptions,
     );
 
     return result?.files.firstOrNull;
@@ -230,6 +243,8 @@ abstract final class FilePicker {
   ///
   /// [linuxOptions] can be optionally set to configure Linux-specific options.
   ///
+  /// [webOptions] can be optionally set to configure Web-specific options.
+  ///
   /// Returns a [Future<String?>] which resolves to the absolute path of the selected directory,
   /// if the user selected a directory. Returns `null` if the user aborted the dialog or if the
   /// folder path couldn't be resolved.
@@ -250,6 +265,7 @@ abstract final class FilePicker {
     AndroidSAFOptions? androidSafOptions,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) {
     return FilePickerPlatform.instance.getDirectoryPath(
       dialogTitle: dialogTitle,
@@ -258,6 +274,7 @@ abstract final class FilePicker {
       androidSafOptions: androidSafOptions,
       windowsOptions: windowsOptions,
       linuxOptions: linuxOptions,
+      webOptions: webOptions,
     );
   }
 
@@ -298,6 +315,8 @@ abstract final class FilePicker {
   ///
   /// [linuxOptions] can be optionally set to configure Linux-specific options.
   ///
+  /// [webOptions] can be optionally set to configure Web-specific options.
+  ///
   /// Returns `null` if aborted.
   static Future<String?> saveFile({
     String? dialogTitle,
@@ -313,6 +332,7 @@ abstract final class FilePicker {
     bool lockParentWindow = false,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) {
     return FilePickerPlatform.instance.saveFile(
       dialogTitle: dialogTitle,
@@ -325,6 +345,7 @@ abstract final class FilePicker {
       lockParentWindow: lockParentWindow,
       windowsOptions: windowsOptions,
       linuxOptions: linuxOptions,
+      webOptions: webOptions,
     );
   }
 

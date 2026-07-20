@@ -6,6 +6,7 @@ import 'package:file_picker/src/api/file_picker_types.dart';
 import 'package:file_picker/src/api/android_saf_options.dart';
 import 'package:file_picker/src/api/windows_options.dart';
 import 'package:file_picker/src/api/linux_options.dart';
+import 'package:file_picker/src/api/web_options.dart';
 import 'package:file_picker/src/platform/file_picker_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
@@ -47,6 +48,7 @@ abstract class FilePickerPlatform extends PlatformInterface {
     AndroidSAFOptions? androidSafOptions,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) async {
     throw UnimplementedError('pickFiles() has not been implemented.');
   }
@@ -82,6 +84,7 @@ abstract class FilePickerPlatform extends PlatformInterface {
     AndroidSAFOptions? androidSafOptions,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) async {
     throw UnimplementedError('getDirectoryPath() has not been implemented.');
   }
@@ -99,6 +102,7 @@ abstract class FilePickerPlatform extends PlatformInterface {
     bool lockParentWindow = false,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) async {
     throw UnimplementedError('saveFile() has not been implemented.');
   }

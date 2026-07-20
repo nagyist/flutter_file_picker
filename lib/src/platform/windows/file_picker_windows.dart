@@ -11,6 +11,7 @@ import 'package:file_picker/src/api/file_picker_result.dart';
 import 'package:file_picker/src/api/android_saf_options.dart';
 import 'package:file_picker/src/api/windows_options.dart';
 import 'package:file_picker/src/api/linux_options.dart';
+import 'package:file_picker/src/api/web_options.dart';
 
 import 'package:file_picker/src/api/exceptions.dart';
 import 'package:file_picker/src/platform/file_picker_platform_interface.dart';
@@ -42,6 +43,7 @@ class FilePickerWindows extends FilePickerPlatform {
     AndroidSAFOptions? androidSafOptions,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) async {
     final port = ReceivePort();
     await Isolate.spawn(
@@ -111,6 +113,7 @@ class FilePickerWindows extends FilePickerPlatform {
     AndroidSAFOptions? androidSafOptions,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) async {
     return compute(_getDirectoryPathIsolate, {
       'dialogTitle': dialogTitle,
@@ -204,6 +207,7 @@ class FilePickerWindows extends FilePickerPlatform {
     bool lockParentWindow = false,
     WindowsOptions windowsOptions = const WindowsOptions(),
     LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) async {
     final port = ReceivePort();
     await Isolate.spawn(
