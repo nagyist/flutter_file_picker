@@ -98,6 +98,9 @@ class FilePickerMacOS extends FilePickerPlatform {
     final String? directoryPath = await methodChannel.invokeMethod<String>(
       'getDirectoryPath',
       <String, dynamic>{
+        'dialogTitle': dialogTitle == null
+            ? null
+            : escapeDialogTitle(dialogTitle),
         'initialDirectory': escapeInitialDirectory(initialDirectory),
       },
     );

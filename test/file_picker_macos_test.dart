@@ -3,6 +3,7 @@ library;
 
 import 'package:file_picker/src/platform/macos/file_picker_macos.dart';
 import 'package:file_picker/src/api/file_picker_types.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -139,6 +140,41 @@ void main() {
 
     test('should handle empty string', () {
       expect(picker.escapeInitialDirectory(''), equals(''));
+    });
+  });
+
+  group('getDirectoryPath()', () {
+    TestWidgetsFlutterBinding.ensureInitialized();
+
+    final MethodChannel channel = const MethodChannel(
+      'miguelruivo.flutter.plugins.filepicker',
+    );
+    final List<MethodCall> log = <MethodCall>[];
+
+    setUp(() {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
+            log.add(methodCall);
+            return '/Users/test/Documents';
+          });
+      log.clear();
+    });
+
+    test('should pass dialogTitle and initialDirectory to method channel', () async {
+      final picker = FilePickerMacOS();
+
+      final result = await picker.getDirectoryPath(
+        dialogTitle: 'Select Directory',
+        initialDirectory: '~/Documents',
+      );
+
+      expect(result, equals('/Users/test/Documents'));
+      expect(log, hasLength(1));
+      expect(log.first.method, equals('getDirectoryPath'));
+      expect(log.first.arguments, equals({
+        'dialogTitle': 'Select Directory',
+        'initialDirectory': 'Documents',
+      }));
     });
   });
 }
