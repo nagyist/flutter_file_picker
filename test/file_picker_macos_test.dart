@@ -119,7 +119,10 @@ void main() {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
             log.add(methodCall);
-            return '/Users/test/Documents';
+            if (methodCall.method == 'getDirectoryPath') {
+              return '/Users/test/Documents';
+            }
+            return null;
           });
       log.clear();
     });
