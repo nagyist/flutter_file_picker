@@ -1,4 +1,7 @@
 ## 12.0.0-beta.8
+### General
+- Exported `IllegalCharacterInFileNameException` in `file_picker.dart` so exception handling can be performed by callers. [#2077](https://github.com/miguelpruivo/flutter_file_picker/pull/2077)
+
 ### Android
 - Decodes images with `inSampleSize` in `compressImage` to prevent excessive memory usage and `OutOfMemoryError` on large images. [#2083](https://github.com/miguelpruivo/flutter_file_picker/pull/2083)
 
