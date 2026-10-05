@@ -19,6 +19,12 @@ void main() {
       expect(file.uri.path, equals('/tmp/test.png'));
     });
 
+    test('LinuxPlatformFile.path decodes special characters', () {
+      const path = '/home/user/AdSenseReport (3) #1 ñ%.PDF';
+      final file = LinuxPlatformFile.fromPath(path);
+      expect(file.path, equals(path));
+    });
+
     test('LinuxPlatformFile.lengthSync() reflects bytesLength when known', () {
       final withoutBytes = LinuxPlatformFile.fromPath('/tmp/test.png');
       expect(withoutBytes.lengthSync(), isNull);

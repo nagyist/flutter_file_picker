@@ -151,7 +151,7 @@ class FilePickerAndroid extends FilePickerPlatform {
       type: type,
       allowedExtensions: allowedExtensions,
     );
-    return files.map((e) => e.uri.path).toList();
+    return files.map((e) => e.path).nonNulls.toList();
   }
 
   @override
