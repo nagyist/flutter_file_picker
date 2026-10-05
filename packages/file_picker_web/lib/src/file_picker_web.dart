@@ -40,7 +40,7 @@ class FilePickerWeb extends FilePickerPlatform {
         'flt-file-picker-inputs',
       )..id = id;
 
-      document.querySelector('body')!.children.add(targetElement);
+      document.body!.appendChild(targetElement);
       target = targetElement;
     }
     return target;

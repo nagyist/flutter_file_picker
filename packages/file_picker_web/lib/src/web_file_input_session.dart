@@ -51,6 +51,11 @@ class WebFileInputSession {
   final Completer<List<PlatformFile>?> _completer = Completer();
   bool _eventTriggered = false;
 
+  // Kept attached to [target] (and referenced here) for the whole session.
+  // WebKit does not deliver the `change` event to a file input that is not in
+  // the document, which left the returned future hanging on Safari.
+  HTMLInputElement? _input;
+
   // Cached once and reused for both addEventListener and removeEventListener.
   // Function.toJS creates a new JS function object on every call, so passing
   // freshly-created ones to removeEventListener would never actually match
@@ -76,10 +81,10 @@ class WebFileInputSession {
       window.addEventListener('focus', _onCancelListener);
     }
 
+    _input = uploadInput;
     _clearTargetChildren();
-    target.children.add(uploadInput);
+    target.appendChild(uploadInput);
     uploadInput.click();
-    _clearTargetChildren();
 
     return _completer.future;
   }
@@ -90,8 +95,29 @@ class WebFileInputSession {
 
     final targetInput = e.target as HTMLInputElement?;
     _cleanupListeners(targetInput);
+    await _complete(targetInput?.files);
+  }
 
-    final files = targetInput?.files;
+  void _onCancel(Event _) {
+    _cleanupListeners(null);
+
+    Future.delayed(const Duration(milliseconds: 500)).then((_) async {
+      if (_eventTriggered) return;
+      _eventTriggered = true;
+
+      // Safari can fire the window `focus` event well before `change` once
+      // the dialog closes. If the input already holds a selection, use it
+      // instead of reporting a cancellation.
+      final input = _input;
+      final files = input?.files;
+      _cleanupListeners(input);
+      await _complete(files != null && files.length > 0 ? files : null);
+    });
+  }
+
+  Future<void> _complete(FileList? files) async {
+    _removeInput();
+
     if (files == null) {
       if (!_completer.isCompleted) {
         _completer.complete(null);
@@ -107,17 +133,12 @@ class WebFileInputSession {
     }
   }
 
-  void _onCancel(Event _) {
-    _cleanupListeners(null);
-
-    Future.delayed(const Duration(milliseconds: 500)).then((_) {
-      if (!_eventTriggered) {
-        _eventTriggered = true;
-        if (!_completer.isCompleted) {
-          _completer.complete(null);
-        }
-      }
-    });
+  void _removeInput() {
+    final input = _input;
+    _input = null;
+    if (input != null && input.parentNode == target) {
+      target.removeChild(input);
+    }
   }
 
   void _cleanupListeners(HTMLInputElement? input) {

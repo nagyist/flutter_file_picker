@@ -1,3 +1,8 @@
+## 4.0.1
+
+- Fixed picking files on Safari (macOS and iOS) never returning the selection. The hidden `<input type="file">` was never actually attached to the document: `children.add(...)` resolved to `dart:js_interop`'s `JSAny.add` (the JS `+` operator) rather than a DOM insertion, so it silently did nothing. Chromium still delivers `change` for a detached input, but WebKit does not, leaving the returned future hanging or completing with `null`. The input is now appended with `appendChild` and kept attached until the picking session ends. [#2222](https://github.com/vicajilau/flutter_file_picker/issues/2222)
+- When the window regains focus before the `change` event arrives, a selection already present on the input is now returned instead of being reported as a cancellation.
+
 ## 4.0.0
 
 - **BREAKING CHANGE**: `PlatformFile.length()` now returns `Future<int?>` instead of `Future<int>`. Returns `null` when the length could not be determined (e.g. a failed disk read), instead of `0`, matching `lengthSync()`. [#2197](https://github.com/vicajilau/flutter_file_picker/issues/2197)
