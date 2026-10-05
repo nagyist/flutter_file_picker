@@ -26,40 +26,36 @@ extension type _ReadResult(JSObject _) implements JSObject {
   external JSUint8Array? get value;
 }
 
-/// Attempts to fetch bytes from a web-only path (`blob:` or `data:` URL).
+/// Fetches the bytes of a web-only path (`blob:` or `data:` URL).
 ///
 /// Returns the full file bytes (`Uint8List`) using `fetch(...).arrayBuffer()`
-/// for `blob:` URLs, or parses `data:` URIs. Returns `null` if fetching fails
-/// or if [path] is empty or not a valid web URL.
+/// for `blob:` URLs, or parses `data:` URIs. Returns `null` if [path] is not a
+/// web URL, so the caller can fall back to another source. Throws if the
+/// content of a web URL cannot be read.
 Future<Uint8List?> fetchBytesFromWebPath(String? path) async {
-  if (path == null || path.isEmpty) return null;
+  if (!_isWebPath(path)) return null;
 
-  try {
-    if (path.startsWith('data:')) {
-      return Uri.parse(path).data?.contentAsBytes();
-    }
-
-    if (path.startsWith('blob:')) {
-      final response = _Response(await _fetchJs(path.toJS).toDart);
-      final buffer = await response.arrayBuffer().toDart;
-      return buffer.toDart.asUint8List();
-    }
-  } catch (_) {
-    return null;
+  if (path!.startsWith('data:')) {
+    return Uri.parse(path).data!.contentAsBytes();
   }
 
-  return null;
+  final response = _Response(await _fetchJs(path.toJS).toDart);
+  final buffer = await response.arrayBuffer().toDart;
+  return buffer.toDart.asUint8List();
 }
+
+bool _isWebPath(String? path) =>
+    path != null && (path.startsWith('blob:') || path.startsWith('data:'));
 
 /// Attempts to create a streaming `Stream<Uint8List>` from a web-only path
 /// (`blob:` or `data:` URL).
 ///
-/// Returns `null` when streaming isn't possible and the caller should
-/// fall back to [fetchBytesFromWebPath].
+/// Returns `null` if [path] is not a web URL, so the caller can fall back to
+/// another source. Read failures are emitted as errors on the stream.
 Stream<Uint8List>? fetchStreamFromWebPath(String? path) {
-  if (path == null || path.isEmpty) return null;
+  if (!_isWebPath(path)) return null;
 
-  return _streamFromWebPath(path);
+  return _streamFromWebPath(path!);
 }
 
 /// Reads a `blob:` or `data:` URL and emits its bytes as a stream.
@@ -67,43 +63,31 @@ Stream<Uint8List>? fetchStreamFromWebPath(String? path) {
 /// Uses `Response.body` (`ReadableStream`) when available; otherwise falls
 /// back to a single in-memory `arrayBuffer()` chunk.
 Stream<Uint8List> _streamFromWebPath(String path) async* {
-  try {
-    if (path.startsWith('data:')) {
-      final bytes = Uri.parse(path).data?.contentAsBytes();
-      if (bytes != null) {
-        yield bytes;
-      }
-      return;
-    }
-
-    if (path.startsWith('blob:')) {
-      final jsResponse = await _fetchJs(path.toJS).toDart;
-
-      final response = _Response(jsResponse);
-      final body = response.body;
-
-      // If there's no streaming body, fallback to arrayBuffer()
-      if (body == null) {
-        final buffer = await response.arrayBuffer().toDart;
-        yield buffer.toDart.asUint8List();
-        return;
-      }
-
-      final readable = _ReadableStream(body);
-      final reader = _Reader(readable.getReader());
-
-      while (true) {
-        final jsResultObj = await reader.read().toDart;
-        final result = _ReadResult(jsResultObj);
-        if (result.done) break;
-
-        final arr = result.value;
-        if (arr == null) break;
-
-        yield arr.toDart;
-      }
-    }
-  } catch (_) {
+  if (path.startsWith('data:')) {
+    yield Uri.parse(path).data!.contentAsBytes();
     return;
+  }
+
+  final response = _Response(await _fetchJs(path.toJS).toDart);
+  final body = response.body;
+
+  // If there's no streaming body, fallback to arrayBuffer()
+  if (body == null) {
+    final buffer = await response.arrayBuffer().toDart;
+    yield buffer.toDart.asUint8List();
+    return;
+  }
+
+  final readable = _ReadableStream(body);
+  final reader = _Reader(readable.getReader());
+
+  while (true) {
+    final result = _ReadResult(await reader.read().toDart);
+    if (result.done) break;
+
+    final arr = result.value;
+    if (arr == null) break;
+
+    yield arr.toDart;
   }
 }
