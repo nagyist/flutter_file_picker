@@ -125,7 +125,18 @@ class WebFileInputSession {
       return;
     }
 
-    final pickedFiles = await processFiles(files, webOptions);
+    final List<PlatformFile> pickedFiles;
+    try {
+      pickedFiles = await processFiles(files, webOptions);
+    } catch (error, stackTrace) {
+      // Without this the error escapes the event listener uncaught and the
+      // returned future never completes.
+      onFileLoading?.call(FilePickerStatus.done);
+      if (!_completer.isCompleted) {
+        _completer.completeError(error, stackTrace);
+      }
+      return;
+    }
 
     onFileLoading?.call(FilePickerStatus.done);
     if (!_completer.isCompleted) {

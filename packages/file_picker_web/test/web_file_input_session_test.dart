@@ -105,4 +105,22 @@ void main() {
 
     expect(await result, isNull);
   });
+
+  test('completes with an error when processing the files fails', () async {
+    final session = WebFileInputSession(
+      target: target,
+      accept: '',
+      allowMultiple: false,
+      webOptions: const FilePickerWebOptions(),
+      onFileLoading: null,
+      processFiles: (_, _) async => throw StateError('read failed'),
+    );
+    final result = session.start();
+    final input = attachedInput();
+
+    selectFile(input, 'big.bin');
+    input.dispatchEvent(Event('change'));
+
+    await expectLater(result, throwsStateError);
+  });
 }

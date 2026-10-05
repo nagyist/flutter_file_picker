@@ -9,6 +9,7 @@ import 'package:web/web.dart';
 
 import 'file_picker_web_options.dart';
 import 'indexed_task_runner.dart';
+import 'preload_policy.dart';
 import 'web_file_input_session.dart';
 import 'web_platform_file.dart';
 
@@ -161,7 +162,7 @@ class FilePickerWeb extends FilePickerPlatform {
         );
       }
 
-      if (!webOptions.withData) {
+      if (!shouldPreloadBytes(file.size, withData: webOptions.withData)) {
         return _createWebPlatformFile(file: file);
       }
 
@@ -206,30 +207,16 @@ class FilePickerWeb extends FilePickerPlatform {
   }
 
   /// Creates a [WebPlatformFile] from an HTML [File], resolving its `blob:` URI.
+  ///
+  /// The URI always points at the picked [file] itself, which avoids creating a copy.
   WebPlatformFile _createWebPlatformFile({
     required File file,
     Uint8List? bytes,
-    String? path,
     Stream<Uint8List>? readStream,
   }) {
-    String? blobUrl = path;
-
-    if ((blobUrl == null || blobUrl.isEmpty) && bytes == null) {
-      try {
-        blobUrl = URL.createObjectURL(file);
-      } catch (_) {
-        blobUrl = null;
-      }
-    } else if (bytes != null && bytes.isNotEmpty) {
-      final blob = Blob([bytes.toJS].toJS, BlobPropertyBag(type: file.type));
-      blobUrl = URL.createObjectURL(blob);
-    }
-
-    final uri = Uri.parse(blobUrl ?? '');
-
     return WebPlatformFile(
       name: file.name,
-      uri: uri,
+      uri: Uri.parse(URL.createObjectURL(file)),
       bytesLength: bytes != null ? bytes.length : file.size,
       bytes: bytes,
       readStream: readStream,

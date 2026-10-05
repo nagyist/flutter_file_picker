@@ -2,7 +2,11 @@ import 'package:file_picker_platform_interface/file_picker_platform_interface.da
 
 /// Configuration options specific to the Web platform.
 final class FilePickerWebOptions extends WebOptions {
-  /// Whether to return bytes (`PlatformFile.bytes`) in memory upon file picking.
+  /// Whether to read each picked file into memory at pick time.
+  ///
+  /// Files larger than 2 GB are never preloaded, since browsers cannot hold
+  /// them in a single buffer. Their content can be read on demand through
+  /// `PlatformFile.readAsBytes()` and `readAsByteStream()` instead.
   final bool withData;
 
   /// Whether to create a read stream for each picked file.
