@@ -21,6 +21,12 @@ void main() {
       expect(file.uri.path, equals('/C:/Users/Test/file.txt'));
     });
 
+    test('WindowsPlatformFile uri converts back to the original path', () {
+      const path = r'C:\Users\Test\AdSenseReport (3) #1 ñ%.PDF';
+      final file = WindowsPlatformFile.fromPath(path);
+      expect(file.uri.toFilePath(windows: true), equals(path));
+    });
+
     test(
       'WindowsPlatformFile.lengthSync() reflects bytesLength when known',
       () {

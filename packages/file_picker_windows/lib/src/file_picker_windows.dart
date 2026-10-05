@@ -121,7 +121,7 @@ class FilePickerWindows extends FilePickerPlatform {
       type: type,
       allowedExtensions: allowedExtensions,
     );
-    return files.map((e) => e.uri.path).toList();
+    return [for (final file in files) file.uri.toFilePath(windows: true)];
   }
 
   @override
