@@ -5,7 +5,7 @@ final class FilePickerWebOptions extends WebOptions {
   /// Whether to read each picked file into memory at pick time.
   ///
   /// Files larger than 2 GB are never preloaded, since browsers cannot hold
-  /// them in a single buffer. Their content is read on demand through
+  /// them in a single buffer. Their content can be read on demand through
   /// `PlatformFile.readAsBytes()` and `readAsByteStream()` instead.
   final bool withData;
 

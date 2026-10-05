@@ -209,8 +209,6 @@ class FilePickerWeb extends FilePickerPlatform {
   /// Creates a [WebPlatformFile] from an HTML [File], resolving its `blob:` URI.
   ///
   /// The URI always points at the picked [file] itself, which avoids creating a copy.
-  /// `Blob`. Copying preloaded [bytes] into a new `Blob` would double the
-  /// memory use and fails for files larger than 2 GB in some browsers.
   WebPlatformFile _createWebPlatformFile({
     required File file,
     Uint8List? bytes,

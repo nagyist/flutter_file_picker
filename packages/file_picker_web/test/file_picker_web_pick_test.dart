@@ -29,18 +29,18 @@ void main() {
     return result;
   }
 
-  File fileWith(String name, String content) =>
+  File fileWith({required String name, required String content}) =>
       File([utf8.encode(content).toJS].toJS, name);
 
   test('picked files point at a readable blob: URL', () async {
-    final files = await pick([fileWith('a.txt', 'hello')]);
+    final files = await pick([fileWith(name: 'a.txt', content: 'hello')]);
 
     expect(files.single.uri.scheme, 'blob');
     expect(utf8.decode(await files.single.readAsBytes()), 'hello');
   });
 
   test('an empty picked file still gets a blob: URL', () async {
-    final files = await pick([fileWith('empty.txt', '')]);
+    final files = await pick([fileWith(name: 'empty.txt', content: '')]);
 
     expect(files.single.uri.scheme, 'blob');
     expect(await files.single.readAsBytes(), isEmpty);
