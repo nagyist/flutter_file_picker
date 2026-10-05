@@ -1,6 +1,6 @@
 ## 2.0.1
 
-- Fixed `pickFileAndDirectoryPaths()` returning URI paths such as `/C:/Users/name/My%20File.txt` instead of Windows paths. It now returns native paths such as `C:\Users\name\My File.txt`. [#2225](https://github.com/vicajilau/flutter_file_picker/issues/2225)
+- Fixed `pickFileAndDirectoryPaths()` returning URI paths instead of Windows paths. [#2225](https://github.com/vicajilau/flutter_file_picker/issues/2225)
 
 ## 2.0.0
 
