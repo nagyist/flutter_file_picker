@@ -55,6 +55,29 @@ void main() {
       expect(withoutSize.lengthSync(), isNull);
     });
 
+    test(
+      'pickFileAndDirectoryPaths returns decoded paths that match the cached files',
+      () async {
+        final picker = FilePickerAndroid();
+        const cachedPath =
+            '/data/user/0/app/cache/file_picker/1/AdSenseReport (3) #1 ñ%.PDF';
+        TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+            .setMockMethodCallHandler(picker.methodChannel, (call) async {
+              return [
+                {'path': cachedPath, 'name': 'AdSenseReport (3) #1 ñ%.PDF'},
+              ];
+            });
+        addTearDown(
+          () => TestDefaultBinaryMessengerBinding
+              .instance
+              .defaultBinaryMessenger
+              .setMockMethodCallHandler(picker.methodChannel, null),
+        );
+
+        expect(await picker.pickFileAndDirectoryPaths(), [cachedPath]);
+      },
+    );
+
     test('AndroidPlatformFile throws ArgumentError on empty path and uri', () {
       expect(() => AndroidPlatformFile.fromMap({}), throwsArgumentError);
     });
