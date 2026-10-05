@@ -9,6 +9,7 @@ import 'package:web/web.dart';
 
 import 'file_picker_web_options.dart';
 import 'indexed_task_runner.dart';
+import 'preload_policy.dart';
 import 'web_file_input_session.dart';
 import 'web_platform_file.dart';
 
@@ -161,7 +162,7 @@ class FilePickerWeb extends FilePickerPlatform {
         );
       }
 
-      if (!webOptions.withData) {
+      if (!shouldPreloadBytes(file.size, withData: webOptions.withData)) {
         return _createWebPlatformFile(file: file);
       }
 
