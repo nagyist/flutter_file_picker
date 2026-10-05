@@ -2,6 +2,7 @@
 
 - Fixed picking files on Safari (macOS and iOS) never returning the selection. [#2222](https://github.com/vicajilau/flutter_file_picker/issues/2222)
 - Fixed a selection being reported as cancelled when the window regained focus before the `change` event.
+- Fixed `readAsBytes()` and `readAsByteStream()` hiding read failures. A failed stream now emits an error instead of ending early with a truncated file. [#2229](https://github.com/vicajilau/flutter_file_picker/issues/2229)
 
 ## 4.0.0
 
