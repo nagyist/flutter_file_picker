@@ -45,11 +45,14 @@ void main() {
     input.files = transfer.files;
   }
 
-  test('keeps the input attached while the dialog is open', () {
-    createSession().start();
+  test('keeps the input attached while the dialog is open', () async {
+    final result = createSession().start();
 
     expect(target.childNodes.length, 1);
     expect(target.firstChild, isA<HTMLInputElement>());
+
+    attachedInput().dispatchEvent(Event('cancel'));
+    expect(await result, isNull);
   });
 
   test(

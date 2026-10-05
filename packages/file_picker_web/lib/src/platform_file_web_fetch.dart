@@ -32,11 +32,17 @@ extension type _ReadResult(JSObject _) implements JSObject {
 /// for `blob:` URLs, or parses `data:` URIs. Returns `null` if [path] is not a
 /// web URL, so the caller can fall back to another source. Throws if the
 /// content of a web URL cannot be read.
-Future<Uint8List?> fetchBytesFromWebPath(String? path) async {
+Future<Uint8List?> fetchBytesFromWebPath(String path) async {
   if (!_isWebPath(path)) return null;
 
-  if (path!.startsWith('data:')) {
-    return Uri.parse(path).data!.contentAsBytes();
+  if (path.startsWith('data:')) {
+    final uriData = Uri.parse(path).data;
+
+    if (uriData == null) {
+      return null;
+    }
+
+    return uriData.contentAsBytes();
   }
 
   final response = _Response(await _fetchJs(path.toJS).toDart);
@@ -44,18 +50,18 @@ Future<Uint8List?> fetchBytesFromWebPath(String? path) async {
   return buffer.toDart.asUint8List();
 }
 
-bool _isWebPath(String? path) =>
-    path != null && (path.startsWith('blob:') || path.startsWith('data:'));
+bool _isWebPath(String path) =>
+    path.startsWith('blob:') || path.startsWith('data:');
 
 /// Attempts to create a streaming `Stream<Uint8List>` from a web-only path
 /// (`blob:` or `data:` URL).
 ///
 /// Returns `null` if [path] is not a web URL, so the caller can fall back to
 /// another source. Read failures are emitted as errors on the stream.
-Stream<Uint8List>? fetchStreamFromWebPath(String? path) {
+Stream<Uint8List>? fetchStreamFromWebPath(String path) {
   if (!_isWebPath(path)) return null;
 
-  return _streamFromWebPath(path!);
+  return _streamFromWebPath(path);
 }
 
 /// Reads a `blob:` or `data:` URL and emits its bytes as a stream.
@@ -64,7 +70,13 @@ Stream<Uint8List>? fetchStreamFromWebPath(String? path) {
 /// back to a single in-memory `arrayBuffer()` chunk.
 Stream<Uint8List> _streamFromWebPath(String path) async* {
   if (path.startsWith('data:')) {
-    yield Uri.parse(path).data!.contentAsBytes();
+    final uriData = Uri.parse(path).data;
+
+    if (uriData == null) {
+      throw FormatException('Invalid data: URL', path);
+    }
+
+    yield uriData.contentAsBytes();
     return;
   }
 
