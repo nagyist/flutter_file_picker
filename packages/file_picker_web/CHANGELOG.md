@@ -1,3 +1,8 @@
+## 4.0.1
+
+- Fixed picking files on Safari (macOS and iOS) never returning the selection. [#2222](https://github.com/vicajilau/flutter_file_picker/issues/2222)
+- Fixed a selection being reported as cancelled when the window regained focus before the `change` event.
+
 ## 4.0.0
 
 - **BREAKING CHANGE**: `PlatformFile.length()` now returns `Future<int?>` instead of `Future<int>`. Returns `null` when the length could not be determined (e.g. a failed disk read), instead of `0`, matching `lengthSync()`. [#2197](https://github.com/vicajilau/flutter_file_picker/issues/2197)

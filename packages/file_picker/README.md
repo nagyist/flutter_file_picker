@@ -66,7 +66,7 @@ The iOS and macOS native implementations live under the shared Darwin source tre
 2. **Removed Parameters Deprecated Since v12**:
    * `allowMultiple`, `withData`, `withReadStream`, and `readSequential` on `pickFiles()`: use `pickFile()` for single-file selection, and `PlatformFile.readAsBytes()`/`readAsByteStream()` to read file data.
    * `lockParentWindow` on `pickFiles()`/`pickFile()`/`getDirectoryPath()`/`saveFile()`: use `WindowsOptions.lockParentWindow` or `LinuxOptions.lockParentWindow`.
-   * `cancelUploadOnWindowBlur` on `pickFiles()`/`pickFile()`: use `WebOptions.cancelUploadOnWindowBlur`.
+   * `cancelUploadOnWindowBlur` on `pickFiles()`/`pickFile()`: pass `webOptions: FilePickerWebOptions(cancelUploadOnWindowBlur: false)`. `FilePickerWebOptions` lives in `package:file_picker_web`, so add it as a direct dependency to import it.
    * `androidSafOptions` on `pickFiles()`/`pickFile()`/`getDirectoryPath()`: use `androidOptions`.
 
 ## Migrating to v12
