@@ -1,3 +1,7 @@
+## 2.0.2
+
+- Fixed `pickFileAndDirectoryPaths()` returning percent-encoded paths that do not exist for names with spaces, `#`, `%` or non-ASCII characters. The paths are now decoded, matching `PlatformFile.path`. [#2225](https://github.com/vicajilau/flutter_file_picker/issues/2225)
+
 ## 2.0.1
 
 - Raised the `dbus` dependency lower bound to `^0.8.0`.

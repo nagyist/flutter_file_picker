@@ -1,3 +1,7 @@
+## 2.0.1
+
+- Fixed `pickFileAndDirectoryPaths()` returning URI paths such as `/C:/Users/name/My%20File.txt` instead of Windows paths. It now returns native paths such as `C:\Users\name\My File.txt`. [#2225](https://github.com/vicajilau/flutter_file_picker/issues/2225)
+
 ## 2.0.0
 
 - **BREAKING CHANGE**: `PlatformFile.length()` now returns `Future<int?>` instead of `Future<int>`. Returns `null` when the length could not be determined (e.g. a failed disk read), instead of `0`, matching `lengthSync()`. [#2197](https://github.com/vicajilau/flutter_file_picker/issues/2197)
