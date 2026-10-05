@@ -206,30 +206,18 @@ class FilePickerWeb extends FilePickerPlatform {
   }
 
   /// Creates a [WebPlatformFile] from an HTML [File], resolving its `blob:` URI.
+  ///
+  /// The URI always points at the picked [file] itself, which is already a
+  /// `Blob`. Copying preloaded [bytes] into a new `Blob` would double the
+  /// memory use and fails for files larger than 2 GB in some browsers.
   WebPlatformFile _createWebPlatformFile({
     required File file,
     Uint8List? bytes,
-    String? path,
     Stream<Uint8List>? readStream,
   }) {
-    String? blobUrl = path;
-
-    if ((blobUrl == null || blobUrl.isEmpty) && bytes == null) {
-      try {
-        blobUrl = URL.createObjectURL(file);
-      } catch (_) {
-        blobUrl = null;
-      }
-    } else if (bytes != null && bytes.isNotEmpty) {
-      final blob = Blob([bytes.toJS].toJS, BlobPropertyBag(type: file.type));
-      blobUrl = URL.createObjectURL(blob);
-    }
-
-    final uri = Uri.parse(blobUrl ?? '');
-
     return WebPlatformFile(
       name: file.name,
-      uri: uri,
+      uri: Uri.parse(URL.createObjectURL(file)),
       bytesLength: bytes != null ? bytes.length : file.size,
       bytes: bytes,
       readStream: readStream,
