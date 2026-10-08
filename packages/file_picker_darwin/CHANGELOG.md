@@ -1,3 +1,7 @@
+## 2.1.3
+
+- Fixed `saveFile()` on macOS appending a second, lowercased extension to file names with a custom extension, such as `j.nme2mbAllpreset`. [#2238](https://github.com/vicajilau/flutter_file_picker/issues/2238)
+
 ## 2.1.2
 
 - Fixed `initialDirectory` having no effect on macOS and iOS for `pickFile()`, `pickFiles()`, and `getDirectoryPath()`. [#2216](https://github.com/vicajilau/flutter_file_picker/issues/2216)
